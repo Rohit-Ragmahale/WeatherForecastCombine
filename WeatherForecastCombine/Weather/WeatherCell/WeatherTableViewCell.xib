@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="170" id="KGk-i7-Jjw" customClass="WeatherTableViewCell" customModule="WeatherForecastCombine" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="493" height="206"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="493" height="206"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tP0-0e-Qog">
+                        <rect key="frame" x="20" y="20" width="303" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kRC-5f-Hb1">
+                        <rect key="frame" x="20" y="54.5" width="303" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Temp:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ST7-vg-qJg">
+                        <rect key="frame" x="20" y="89" width="303" height="51.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Humidity" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iex-hw-9y3">
+                        <rect key="frame" x="20" y="154.5" width="303" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pbj-OQ-oX8">
+                        <rect key="frame" x="343" y="53" width="100" height="100"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="100" id="COU-tt-F8P"/>
+                            <constraint firstAttribute="width" constant="100" id="xjk-tE-OJw"/>
+                        </constraints>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WYo-Km-bRQ">
+                        <rect key="frame" x="375" y="10" width="100" height="36"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="36" id="Tc8-Qj-Jdr"/>
+                            <constraint firstAttribute="width" constant="100" id="yud-zG-7bj"/>
+                        </constraints>
+                        <state key="normal" title="Bookmark" image="bookmark" catalog="system">
+                            <color key="titleColor" red="0.25882352939999997" green="0.078431372550000003" blue="0.37254901959999998" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                        <connections>
+                            <action selector="usertappedBoomarkPincode" destination="KGk-i7-Jjw" eventType="touchUpInside" id="JkE-sd-Yu8"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="tP0-0e-Qog" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="1hf-AH-dsw"/>
+                    <constraint firstItem="kRC-5f-Hb1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="6Oe-eO-c8Q"/>
+                    <constraint firstItem="pbj-OQ-oX8" firstAttribute="leading" secondItem="tP0-0e-Qog" secondAttribute="trailing" constant="20" id="7xG-Kf-e5N"/>
+                    <constraint firstItem="pbj-OQ-oX8" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="ATk-kL-v5n"/>
+                    <constraint firstItem="ST7-vg-qJg" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="Bqg-sw-Wbh"/>
+                    <constraint firstAttribute="trailing" secondItem="WYo-Km-bRQ" secondAttribute="trailing" constant="18" id="JVA-ci-2SR"/>
+                    <constraint firstItem="Iex-hw-9y3" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="Qsc-4b-K5K"/>
+                    <constraint firstItem="pbj-OQ-oX8" firstAttribute="leading" secondItem="Iex-hw-9y3" secondAttribute="trailing" constant="20" id="RWK-1A-XHY"/>
+                    <constraint firstItem="pbj-OQ-oX8" firstAttribute="leading" secondItem="ST7-vg-qJg" secondAttribute="trailing" constant="20" id="SVZ-IL-San"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="Iex-hw-9y3" secondAttribute="bottom" constant="20" id="Wj4-Xh-vn1"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="pbj-OQ-oX8" secondAttribute="trailing" constant="30" id="Xxx-Ko-C9o"/>
+                    <constraint firstItem="ST7-vg-qJg" firstAttribute="top" secondItem="kRC-5f-Hb1" secondAttribute="bottom" constant="14" id="YN7-N9-qEV"/>
+                    <constraint firstItem="kRC-5f-Hb1" firstAttribute="top" secondItem="tP0-0e-Qog" secondAttribute="bottom" constant="14" id="hL1-Ej-faL"/>
+                    <constraint firstItem="WYo-Km-bRQ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="j1T-GX-XkC"/>
+                    <constraint firstItem="Iex-hw-9y3" firstAttribute="top" secondItem="ST7-vg-qJg" secondAttribute="bottom" constant="14" id="nqd-IZ-CzI"/>
+                    <constraint firstItem="tP0-0e-Qog" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="uBI-SJ-39f"/>
+                    <constraint firstItem="pbj-OQ-oX8" firstAttribute="leading" secondItem="kRC-5f-Hb1" secondAttribute="trailing" constant="20" id="vuz-63-ONa"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="city" destination="tP0-0e-Qog" id="m4g-aj-fjH"/>
+                <outlet property="humidity" destination="Iex-hw-9y3" id="kN0-Gc-mjb"/>
+                <outlet property="tempDescription" destination="kRC-5f-Hb1" id="0SO-m2-ppL"/>
+                <outlet property="temperatureDetails" destination="ST7-vg-qJg" id="dkc-CH-fc1"/>
+                <outlet property="weatherImageView" destination="pbj-OQ-oX8" id="xPQ-4Z-CtT"/>
+            </connections>
+            <point key="canvasLocation" x="103.62318840579711" y="79.6875"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="bookmark" catalog="system" width="112" height="128"/>
+    </resources>
+</document>
