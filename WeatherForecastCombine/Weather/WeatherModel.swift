@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol PincodeProtocol {
     var pincodes: [String]{get}
@@ -18,6 +19,7 @@ protocol PincodeProtocol {
 protocol WeatherModelDelegate {
     func modelDataUpdated()
     func weatherDataLoadFailedFor(pincode: String)
+    
 }
 
 class WeatherModel: PincodeProtocol {
@@ -60,6 +62,10 @@ class WeatherModel: PincodeProtocol {
         DataSource.shared.bookmarkPincode(pincode: pincode)
     }
     
+    func getWeatherForecastFor(pincode: String) {
+        
+    }
+    
     func getWeatherFor(pincode: String) -> LocationWeatherData? {
         if let locationWeatherData = DataSource.shared.getLocationWeatherDataFor(pincode: pincode) {
             return locationWeatherData
@@ -72,6 +78,9 @@ class WeatherModel: PincodeProtocol {
 }
 
 extension WeatherModel: DataSourceDelegate {
+    
+    func forecastDataLoadFailedFor(pincode: String) {
+    }
     
     func weatherDataLoadFailedFor(pincode: String) {
         removePincode(pin: pincode)

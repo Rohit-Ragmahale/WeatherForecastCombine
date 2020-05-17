@@ -19,6 +19,7 @@ class BookMarkViewController: UIViewController {
         title = "Bookmarks"
         tableView.register(UINib(nibName: "WeatherTableViewCell", bundle: nil), forCellReuseIdentifier: "WeatherTableViewCell")
         presenter.attachView(view: self)
+       
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,5 +54,9 @@ extension BookMarkViewController:  WeatherPresenterDelegate {
             alert.dismiss(animated: true, completion: nil)
         }))
         present(alert, animated: true, completion: nil)
+    }
+    
+    func presentVC(viewController: UIViewController) {
+        present(UINavigationController(rootViewController: viewController), animated: true, completion: nil)
     }
 }

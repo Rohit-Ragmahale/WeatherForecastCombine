@@ -10,6 +10,7 @@ import UIKit
 
 protocol ActionDelegate {
     func boookmarkPincode(pincode: String)
+    func getForecast(pincode: String)
 }
 
 class WeatherTableViewCell: UITableViewCell {
@@ -19,6 +20,8 @@ class WeatherTableViewCell: UITableViewCell {
     @IBOutlet weak var humidity: UILabel!
     @IBOutlet weak var weatherImageView: UIImageView!
     
+    @IBOutlet weak var bookMarkButton: UIButton!
+    @IBOutlet weak var forecastButton: UIButton!
     var actionDelegate: ActionDelegate?
     
     var pincode: String = ""
@@ -35,17 +38,45 @@ class WeatherTableViewCell: UITableViewCell {
         actionDelegate?.boookmarkPincode(pincode: pincode)
     }
     
-    func inflateWithWeather(weather: Weather?, pincode: String) {
-        self.pincode = pincode
+    @IBAction func getForecastButtonTapped(_ sender: Any) {
+        actionDelegate?.getForecast(pincode: pincode)
+    }
+
+    func inflateWithForecast(weather: Forecast?, pincode: String) {
+        bookMarkButton.isHidden = true
+        forecastButton.isHidden = true
+        
         if let weather = weather {
-            weatherImageView.image = UIImage()
-            city.text = weather.city
-            tempDescription.text = weather.description
-            temperatureDetails.text = "Temp: \(weather.temp?.toString() ?? "NA")\nMin: \(weather.temp_min?.toString() ?? "NA") Max:\(weather.temp_max?.toString() ?? "NA")"
-            humidity.text = "\(weather.humidity?.toString() ?? "NA")"
+            city.text = weather.date?.getDateText()
+            updateWeatherDetails(weather: weather)
         } else {
-            city.text = pincode
-            tempDescription.text = "Details Not available"
+            updateViewForNoData()
         }
+    }
+    
+    func inflateWithWeather(weather: Forecast?, locationDetails: LocationDetails?, pincode: String) {
+        bookMarkButton.isHidden = false
+        forecastButton.isHidden = false
+        self.pincode = pincode
+        if let locationDetails = locationDetails {
+            city.text = locationDetails.city
+        }
+        if let weather = weather {
+            updateWeatherDetails(weather: weather)
+        } else {
+            updateViewForNoData()
+        }
+    }
+    
+    private func updateWeatherDetails(weather: Forecast) {
+        weatherImageView.image = UIImage()
+        tempDescription.text = weather.description
+        temperatureDetails.text = "Temp: \(weather.temp?.toString() ?? "NA")\n(Min: \(weather.temp_min?.toString() ?? "NA") Max:\(weather.temp_max?.toString() ?? "NA"))"
+        humidity.text = "Humidity: \(weather.humidity?.toString() ?? "NA")"
+    }
+    
+    private func updateViewForNoData() {
+       city.text = pincode
+       tempDescription.text = "Details Not available"
     }
 }

@@ -29,7 +29,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Temp:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ST7-vg-qJg">
-                        <rect key="frame" x="20" y="89" width="303" height="51.5"/>
+                        <rect key="frame" x="20" y="83" width="303" height="63.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -60,6 +60,19 @@
                             <action selector="usertappedBoomarkPincode" destination="KGk-i7-Jjw" eventType="touchUpInside" id="JkE-sd-Yu8"/>
                         </connections>
                     </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JAr-Iq-DP4">
+                        <rect key="frame" x="375" y="160" width="100" height="36"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="36" id="iFG-f6-gL3"/>
+                            <constraint firstAttribute="width" constant="100" id="mFs-Fl-m25"/>
+                        </constraints>
+                        <state key="normal" title="Forecast" image="doc.on.doc.fill" catalog="system">
+                            <color key="titleColor" red="0.25882352939999997" green="0.078431372550000003" blue="0.37254901959999998" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                        <connections>
+                            <action selector="getForecastButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="wVz-FV-8dX"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="tP0-0e-Qog" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="1hf-AH-dsw"/>
@@ -71,28 +84,33 @@
                     <constraint firstItem="Iex-hw-9y3" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="Qsc-4b-K5K"/>
                     <constraint firstItem="pbj-OQ-oX8" firstAttribute="leading" secondItem="Iex-hw-9y3" secondAttribute="trailing" constant="20" id="RWK-1A-XHY"/>
                     <constraint firstItem="pbj-OQ-oX8" firstAttribute="leading" secondItem="ST7-vg-qJg" secondAttribute="trailing" constant="20" id="SVZ-IL-San"/>
+                    <constraint firstAttribute="bottom" secondItem="JAr-Iq-DP4" secondAttribute="bottom" constant="10" id="U9w-G7-Eb7"/>
                     <constraint firstAttribute="bottomMargin" secondItem="Iex-hw-9y3" secondAttribute="bottom" constant="20" id="Wj4-Xh-vn1"/>
                     <constraint firstAttribute="trailingMargin" secondItem="pbj-OQ-oX8" secondAttribute="trailing" constant="30" id="Xxx-Ko-C9o"/>
-                    <constraint firstItem="ST7-vg-qJg" firstAttribute="top" secondItem="kRC-5f-Hb1" secondAttribute="bottom" constant="14" id="YN7-N9-qEV"/>
+                    <constraint firstItem="ST7-vg-qJg" firstAttribute="top" secondItem="kRC-5f-Hb1" secondAttribute="bottom" constant="8" id="YN7-N9-qEV"/>
                     <constraint firstItem="kRC-5f-Hb1" firstAttribute="top" secondItem="tP0-0e-Qog" secondAttribute="bottom" constant="14" id="hL1-Ej-faL"/>
                     <constraint firstItem="WYo-Km-bRQ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="j1T-GX-XkC"/>
-                    <constraint firstItem="Iex-hw-9y3" firstAttribute="top" secondItem="ST7-vg-qJg" secondAttribute="bottom" constant="14" id="nqd-IZ-CzI"/>
+                    <constraint firstAttribute="trailing" secondItem="JAr-Iq-DP4" secondAttribute="trailing" constant="18" id="kxE-qR-aqD"/>
+                    <constraint firstItem="Iex-hw-9y3" firstAttribute="top" secondItem="ST7-vg-qJg" secondAttribute="bottom" constant="8" id="nqd-IZ-CzI"/>
                     <constraint firstItem="tP0-0e-Qog" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="uBI-SJ-39f"/>
                     <constraint firstItem="pbj-OQ-oX8" firstAttribute="leading" secondItem="kRC-5f-Hb1" secondAttribute="trailing" constant="20" id="vuz-63-ONa"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="bookMarkButton" destination="WYo-Km-bRQ" id="1Ms-pn-V0U"/>
                 <outlet property="city" destination="tP0-0e-Qog" id="m4g-aj-fjH"/>
+                <outlet property="forecastButton" destination="JAr-Iq-DP4" id="AfL-pd-JIw"/>
                 <outlet property="humidity" destination="Iex-hw-9y3" id="kN0-Gc-mjb"/>
                 <outlet property="tempDescription" destination="kRC-5f-Hb1" id="0SO-m2-ppL"/>
                 <outlet property="temperatureDetails" destination="ST7-vg-qJg" id="dkc-CH-fc1"/>
                 <outlet property="weatherImageView" destination="pbj-OQ-oX8" id="xPQ-4Z-CtT"/>
             </connections>
-            <point key="canvasLocation" x="103.62318840579711" y="79.6875"/>
+            <point key="canvasLocation" x="160" y="84"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="bookmark" catalog="system" width="112" height="128"/>
+        <image name="doc.on.doc.fill" catalog="system" width="117" height="128"/>
     </resources>
 </document>

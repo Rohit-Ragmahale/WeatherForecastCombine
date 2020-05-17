@@ -60,10 +60,14 @@ class NetworkHelper {
         }
     }
      
-     func getForecast(zipcode: String) {
-       let urlString: String = "\(baseURL)/forecast?id=\(zipcode)&units=metric&cnt=5&APPID=\(kAppId)"
+    func loadForecast(cityCode: CLongLong, pincode: String) {
+       let urlString: String = "\(baseURL)/forecast?id=\(cityCode)&units=metric&cnt=5&APPID=\(kAppId)&cnt=5"
         NetworkManager.shared.downloadData(url: urlString) { (data: [String : Any]?) in
-            
+            DispatchQueue.main.async {
+                for observer: NetworkHelperObserver in self.observers {
+                    observer.observer?.forecastsLoadedFor(pin: pincode, data: data)
+                }
+            }
         }
      }
     
