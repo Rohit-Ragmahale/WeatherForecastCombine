@@ -12,6 +12,7 @@ import UIKit
 protocol WeatherPresenterDelegate {
    func reloadData()
    func showAlert(title: String, message: String)
+   func presentVC(viewController: UIViewController)
 }
 
 class WeatherPresenter {
@@ -28,11 +29,6 @@ class WeatherPresenter {
     
     func searchCurruntWeather(pincode: String) {
         model.addPincode(pin: pincode)
-       // _ = model.getWeatherFor(pincode: pincode)
-    }
-
-    private func getCurruntWeather(pincode: String) -> Weather? {
-        return model.getWeatherFor(pincode: pincode)?.weather
     }
     
     func getPincodeCount() -> Int {
@@ -42,7 +38,8 @@ class WeatherPresenter {
     func getWeatherDataForCellAtIndex(cell: WeatherTableViewCell, index: Int) {
         let pincode = model.getAllpincodes()[index]
         cell.actionDelegate = self
-        cell.inflateWithWeather(weather: getCurruntWeather(pincode:  pincode), pincode: pincode)
+        let data = model.getWeatherFor(pincode: pincode)
+        cell.inflateWithWeather(weather: data?.weather, locationDetails: data?.locationDetails, pincode: pincode)
     }
 }
 
@@ -59,6 +56,16 @@ extension WeatherPresenter: WeatherModelDelegate {
 }
 
 extension WeatherPresenter: ActionDelegate {
+    
+      func getForecast(pincode: String) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let forecastVC = storyboard.instantiateViewController(withIdentifier: "ForecastListViewController")
+            as? ForecastListViewController {
+            forecastVC.presenter = ForecastListPresenter(pincode: pincode)
+            view?.presentVC(viewController: forecastVC)
+        }
+    }
+
     func boookmarkPincode(pincode: String) {
         model.bookmarkPincode(pincode: pincode)
         view?.showAlert(title: "Bookmark", message: "Bookmark added for \(pincode)")

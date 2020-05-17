@@ -30,8 +30,10 @@ class NetworkHelper {
     private var observers: [NetworkHelperObserver] = []
     
     let baseURL = "https://api.openweathermap.org/data/2.5"
-    let kAppId = "5a4b2d457ecbef9eb2a71e480b947604"
-    let iconURL = "https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-hdpi/"
+    //let kAppId = "5a4b2d457ecbef9eb2a71e480b947604"
+    let kAppId = "7eaab9424f40d70b55d21a995bc1bd4c"//rohit
+    //
+    static let iconURL = "https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-hdpi/"
     
     func addObserver(observer: NetworkHelperDelegate) {
         observers.append(NetworkHelperObserver(observer: observer))
@@ -60,14 +62,18 @@ class NetworkHelper {
         }
     }
      
-     func getForecast(zipcode: String) {
-       let urlString: String = "\(baseURL)/forecast?id=\(zipcode)&units=metric&cnt=5&APPID=\(kAppId)"
+    func loadForecast(cityCode: CLongLong, pincode: String) {
+       let urlString: String = "\(baseURL)/forecast?id=\(cityCode)&units=metric&cnt=5&APPID=\(kAppId)&cnt=5"
         NetworkManager.shared.downloadData(url: urlString) { (data: [String : Any]?) in
-            
+            DispatchQueue.main.async {
+                for observer: NetworkHelperObserver in self.observers {
+                    observer.observer?.forecastsLoadedFor(pin: pincode, data: data)
+                }
+            }
         }
      }
     
-    func getWeatherIcon(id: Int) -> String {
+    static func getWeatherIcon(id: Int) -> String {
         switch id {
         case  200...232:
         return iconURL + "art_storm.png"

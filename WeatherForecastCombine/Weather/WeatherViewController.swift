@@ -31,6 +31,7 @@ class WeatherViewController: UIViewController {
         if let text = picodeTextField.text, text.count > 0 {
             presenter.searchCurruntWeather(pincode: text)
         }
+        picodeTextField.text = ""
     }
 
 }
@@ -54,7 +55,7 @@ extension WeatherViewController:  WeatherPresenterDelegate {
     func reloadData() {
         tableView.reloadData()
     }
-    
+
     func showAlert(title: String, message: String) {
         tableView.reloadData()
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
@@ -62,5 +63,9 @@ extension WeatherViewController:  WeatherPresenterDelegate {
             alert.dismiss(animated: true, completion: nil)
         }))
         present(alert, animated: true, completion: nil)
+    }
+    
+    func presentVC(viewController: UIViewController) {
+        present(UINavigationController(rootViewController: viewController), animated: true, completion: nil)
     }
 }

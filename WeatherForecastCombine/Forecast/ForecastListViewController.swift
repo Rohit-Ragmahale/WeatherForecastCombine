@@ -1,32 +1,35 @@
 //
-//  BookMarkViewController.swift
+//  ForecastListViewController.swift
 //  WeatherForecastCombine
 //
-//  Created by Rohit on 16/05/20.
+//  Created by Rohit on 17/05/20.
 //  Copyright © 2020 Rohit. All rights reserved.
 //
 
 import UIKit
 
-class BookMarkViewController: UIViewController {
+class ForecastListViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
-    private var presenter = BookMarkPresenter()
-    
+    var presenter = ForecastListPresenter(pincode: "")
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Bookmarks"
+        
         tableView.register(UINib(nibName: "WeatherTableViewCell", bundle: nil), forCellReuseIdentifier: "WeatherTableViewCell")
-        presenter.attachView(view: self) 
+        presenter.attachView(view: self)
+        presenter.loadForecast()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        title = presenter.getTitle()
         tableView.reloadData()
     }
 }
 
-extension BookMarkViewController: UITableViewDelegate, UITableViewDataSource {
+extension ForecastListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         presenter.getPincodeCount()
     }
@@ -41,7 +44,7 @@ extension BookMarkViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension BookMarkViewController:  WeatherPresenterDelegate {
+extension ForecastListViewController:  WeatherPresenterDelegate {
     func reloadData() {
         tableView.reloadData()
     }
@@ -56,6 +59,7 @@ extension BookMarkViewController:  WeatherPresenterDelegate {
     }
     
     func presentVC(viewController: UIViewController) {
-        present(UINavigationController(rootViewController: viewController), animated: true, completion: nil)
+       
     }
 }
+

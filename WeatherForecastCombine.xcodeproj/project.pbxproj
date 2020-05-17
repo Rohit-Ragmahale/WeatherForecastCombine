@@ -17,6 +17,10 @@
 		F9419E86246AFF1000707564 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9419E84246AFF1000707564 /* LaunchScreen.storyboard */; };
 		F9419E8F246B188300707564 /* WeatherPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9419E8E246B188300707564 /* WeatherPresenter.swift */; };
 		F9419E91246B19BC00707564 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9419E90246B19BC00707564 /* WeatherViewController.swift */; };
+		F953D68E24713F1D00A422D8 /* CommonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F953D68D24713F1D00A422D8 /* CommonExtensions.swift */; };
+		F953D69024713F3B00A422D8 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F953D68F24713F3B00A422D8 /* DateExtension.swift */; };
+		F953D69224714DEF00A422D8 /* ForecastListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F953D69124714DEF00A422D8 /* ForecastListViewController.swift */; };
+		F953D6942471551C00A422D8 /* ForecastListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F953D6932471551C00A422D8 /* ForecastListPresenter.swift */; };
 		F96BE9BF246C4053001A3A04 /* WeatherCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96BE9BE246C4053001A3A04 /* WeatherCoreData.swift */; };
 		F96BE9C2246C40B5001A3A04 /* Weather.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F96BE9C0246C40B5001A3A04 /* Weather.xcdatamodeld */; };
 		F96BE9C4246C4187001A3A04 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96BE9C3246C4187001A3A04 /* CoreDataManager.swift */; };
@@ -44,6 +48,10 @@
 		F9419E87246AFF1000707564 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F9419E8E246B188300707564 /* WeatherPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherPresenter.swift; sourceTree = "<group>"; };
 		F9419E90246B19BC00707564 /* WeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
+		F953D68D24713F1D00A422D8 /* CommonExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonExtensions.swift; sourceTree = "<group>"; };
+		F953D68F24713F3B00A422D8 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		F953D69124714DEF00A422D8 /* ForecastListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastListViewController.swift; sourceTree = "<group>"; };
+		F953D6932471551C00A422D8 /* ForecastListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastListPresenter.swift; sourceTree = "<group>"; };
 		F96BE9BE246C4053001A3A04 /* WeatherCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherCoreData.swift; sourceTree = "<group>"; };
 		F96BE9C1246C40B5001A3A04 /* Weather.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Weather.xcdatamodel; sourceTree = "<group>"; };
 		F96BE9C3246C4187001A3A04 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -88,6 +96,7 @@
 		F9419E78246AFEE400707564 /* WeatherForecastCombine */ = {
 			isa = PBXGroup;
 			children = (
+				F953D68C24713E7B00A422D8 /* Extensions */,
 				F9880093246D7C67008EF980 /* DataSource */,
 				F9419E95246B1A3700707564 /* Storage */,
 				F9419E94246B1A2E00707564 /* Network */,
@@ -119,6 +128,8 @@
 		F9419E92246B1A0C00707564 /* Forecast */ = {
 			isa = PBXGroup;
 			children = (
+				F953D69124714DEF00A422D8 /* ForecastListViewController.swift */,
+				F953D6932471551C00A422D8 /* ForecastListPresenter.swift */,
 			);
 			path = Forecast;
 			sourceTree = "<group>";
@@ -150,6 +161,15 @@
 				F96BE9C3246C4187001A3A04 /* CoreDataManager.swift */,
 			);
 			path = Storage;
+			sourceTree = "<group>";
+		};
+		F953D68C24713E7B00A422D8 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				F953D68F24713F3B00A422D8 /* DateExtension.swift */,
+				F953D68D24713F1D00A422D8 /* CommonExtensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		F96BE9BD246C4013001A3A04 /* CoreData */ = {
@@ -267,9 +287,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F953D69224714DEF00A422D8 /* ForecastListViewController.swift in Sources */,
 				F99353292470653200BAE1E8 /* BookMarkPresenter.swift in Sources */,
+				F953D69024713F3B00A422D8 /* DateExtension.swift in Sources */,
 				F988009E246D83E2008EF980 /* WeatherTableViewCell.swift in Sources */,
 				F98800A1246D988D008EF980 /* LocationWatherData.swift in Sources */,
+				F953D6942471551C00A422D8 /* ForecastListPresenter.swift in Sources */,
 				F9880095246D7C99008EF980 /* DataSource.swift in Sources */,
 				F909ECAA246C602A007F6FAF /* NetworkHelper.swift in Sources */,
 				F909ECA8246C5F66007F6FAF /* NetworkManager.swift in Sources */,
@@ -278,6 +301,7 @@
 				F9419E91246B19BC00707564 /* WeatherViewController.swift in Sources */,
 				F9419E8F246B188300707564 /* WeatherPresenter.swift in Sources */,
 				F9419E7A246AFEE400707564 /* AppDelegate.swift in Sources */,
+				F953D68E24713F1D00A422D8 /* CommonExtensions.swift in Sources */,
 				F96BE9CE246C4FEA001A3A04 /* BookMark+CoreDataProperties.swift in Sources */,
 				F96BE9BF246C4053001A3A04 /* WeatherCoreData.swift in Sources */,
 				F96BE9CB246C4840001A3A04 /* BookMarkModel.swift in Sources */,

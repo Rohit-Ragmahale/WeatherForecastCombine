@@ -15,7 +15,6 @@ class BookmarkDataModel: PincodeProtocol {
     init() {
         DataSource.shared.addObserver(observer: self)
         pincodes = CoreDataManager.shared.getAllBookmarks()
-        
     }
     
     func attachPresenter(presenter: WeatherModelDelegate) {
@@ -53,6 +52,10 @@ class BookmarkDataModel: PincodeProtocol {
 }
 
 extension BookmarkDataModel: DataSourceDelegate  {
+    
+    func forecastDataLoadFailedFor(pincode: String) {
+        
+    }
     
     func weatherDataLoadFailedFor(pincode: String) {
         removePincode(pin: pincode)

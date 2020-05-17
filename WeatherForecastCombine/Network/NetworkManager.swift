@@ -32,7 +32,7 @@ class NetworkManager: NSObject {
     let queue: OperationQueue = {
         var queue = OperationQueue()
         queue.name = NetworkConstant.QueueName
-        queue.maxConcurrentOperationCount = 3
+        queue.maxConcurrentOperationCount = 10
         return queue
     }()
     private var _shouldNewtwokActivity: Bool = false
