@@ -20,7 +20,7 @@ class ForecastListPresenter {
         self.view = view
     }
     
-    private func letLocationDataFor() -> LocationWeatherData?  {
+    private func getLocationDataFor() -> LocationWeatherData?  {
         if let locationWeatherData = DataSource.shared.getLocationWeatherDataFor(pincode: pincode) {
             return locationWeatherData
         }
@@ -28,17 +28,18 @@ class ForecastListPresenter {
     }
     
     func getPincodeCount() -> Int {
-        letLocationDataFor()?.forecasts.count ?? 0
+        getLocationDataFor()?.forecasts.count ?? 0
     }
-
+    
     func getWeatherDataForCellAtIndex(cell: WeatherTableViewCell, index: Int) {
-        let data = letLocationDataFor()
+        let data = getLocationDataFor()
         cell.inflateWithForecast(weather: data?.forecasts[index], pincode: pincode)
     }
     
     func getTitle() -> String? {
-        return letLocationDataFor()?.locationDetails?.city
+        return getLocationDataFor()?.locationDetails?.city
     }
+    
     func loadForecast() {
         if getPincodeCount() == 0 {
             DataSource.shared.getForecastForLocation(selectedLocation: pincode)

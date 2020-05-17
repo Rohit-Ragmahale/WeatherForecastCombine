@@ -33,6 +33,16 @@ class WeatherTableViewCell: UITableViewCell {
         temperatureDetails.text = ""
         humidity.text = ""
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+//        weatherImageView.image = nil
+//        city.text = ""
+//        tempDescription.text = ""
+//        temperatureDetails.text = ""
+//        humidity.text = ""
+//        pincode = ""
+    }
 
     @IBAction func usertappedBoomarkPincode() {
         actionDelegate?.boookmarkPincode(pincode: pincode)
@@ -69,7 +79,9 @@ class WeatherTableViewCell: UITableViewCell {
     }
     
     private func updateWeatherDetails(weather: Forecast) {
-        weatherImageView.image = UIImage()
+        if let url = weather.url {
+             weatherImageView.load(url: url, placeholder: UIImage())
+        }
         tempDescription.text = weather.description
         temperatureDetails.text = "Temp: \(weather.temp?.toString() ?? "NA")\n(Min: \(weather.temp_min?.toString() ?? "NA") Max:\(weather.temp_max?.toString() ?? "NA"))"
         humidity.text = "Humidity: \(weather.humidity?.toString() ?? "NA")"

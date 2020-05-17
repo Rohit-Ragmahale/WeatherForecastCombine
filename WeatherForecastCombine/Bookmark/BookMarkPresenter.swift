@@ -20,11 +20,7 @@ class BookMarkPresenter {
     func attachView(view: WeatherPresenterDelegate) {
         self.view = view
     }
-    
-    private func getCurruntWeather(pincode: String) -> LocationWeatherData?  {
-        return model.getWeatherFor(pincode: pincode)
-    }
-    
+
     func getPincodeCount() -> Int {
         model.getAllpincodes().count
     }
@@ -32,7 +28,7 @@ class BookMarkPresenter {
     func getWeatherDataForCellAtIndex(cell: WeatherTableViewCell, index: Int) {
         let pincode = model.getAllpincodes()[index]
         cell.actionDelegate = self
-        let data = getCurruntWeather(pincode:  pincode)
+        let data = model.getWeatherFor(pincode: pincode)
         cell.inflateWithWeather(weather: data?.weather, locationDetails: data?.locationDetails, pincode: pincode)
     }
 }

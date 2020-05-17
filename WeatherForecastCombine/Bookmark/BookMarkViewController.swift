@@ -18,8 +18,7 @@ class BookMarkViewController: UIViewController {
         super.viewDidLoad()
         title = "Bookmarks"
         tableView.register(UINib(nibName: "WeatherTableViewCell", bundle: nil), forCellReuseIdentifier: "WeatherTableViewCell")
-        presenter.attachView(view: self)
-       
+        presenter.attachView(view: self) 
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -29,11 +29,6 @@ class WeatherPresenter {
     
     func searchCurruntWeather(pincode: String) {
         model.addPincode(pin: pincode)
-       // _ = model.getWeatherFor(pincode: pincode)
-    }
-
-    private func getCurruntWeather(pincode: String) -> LocationWeatherData? {
-        return model.getWeatherFor(pincode: pincode)
     }
     
     func getPincodeCount() -> Int {
@@ -43,7 +38,7 @@ class WeatherPresenter {
     func getWeatherDataForCellAtIndex(cell: WeatherTableViewCell, index: Int) {
         let pincode = model.getAllpincodes()[index]
         cell.actionDelegate = self
-        let data = getCurruntWeather(pincode:  pincode)
+        let data = model.getWeatherFor(pincode: pincode)
         cell.inflateWithWeather(weather: data?.weather, locationDetails: data?.locationDetails, pincode: pincode)
     }
 }

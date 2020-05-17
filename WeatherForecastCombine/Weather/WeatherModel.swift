@@ -62,10 +62,6 @@ class WeatherModel: PincodeProtocol {
         DataSource.shared.bookmarkPincode(pincode: pincode)
     }
     
-    func getWeatherForecastFor(pincode: String) {
-        
-    }
-    
     func getWeatherFor(pincode: String) -> LocationWeatherData? {
         if let locationWeatherData = DataSource.shared.getLocationWeatherDataFor(pincode: pincode) {
             return locationWeatherData

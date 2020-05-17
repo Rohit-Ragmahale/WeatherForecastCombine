@@ -30,8 +30,10 @@ class Forecast {
     var humidity: Double?
     
     var description: String = ""
-    var imageId: Int = 0
+    //var imageId: Int = 0
     
+    var url: URL?
+
     init(data: [String: Any]) {
         
         if let timeinterval = data["dt"] as? TimeInterval {
@@ -40,7 +42,7 @@ class Forecast {
         
         if let weatherArray = data["weather"] as? [Any], let weather = weatherArray.first as? [String : Any]  {
             description = weather["description"] as! String
-            imageId = weather["id"] as! Int
+            url = URL(string: NetworkHelper.getWeatherIcon(id: weather["id"] as! Int))
         }
         
         if let main = data["main"] as? [String : Any] {

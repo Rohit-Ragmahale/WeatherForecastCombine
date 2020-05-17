@@ -30,8 +30,10 @@ class NetworkHelper {
     private var observers: [NetworkHelperObserver] = []
     
     let baseURL = "https://api.openweathermap.org/data/2.5"
-    let kAppId = "5a4b2d457ecbef9eb2a71e480b947604"
-    let iconURL = "https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-hdpi/"
+    //let kAppId = "5a4b2d457ecbef9eb2a71e480b947604"
+    let kAppId = "7eaab9424f40d70b55d21a995bc1bd4c"//rohit
+    //
+    static let iconURL = "https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-hdpi/"
     
     func addObserver(observer: NetworkHelperDelegate) {
         observers.append(NetworkHelperObserver(observer: observer))
@@ -71,7 +73,7 @@ class NetworkHelper {
         }
      }
     
-    func getWeatherIcon(id: Int) -> String {
+    static func getWeatherIcon(id: Int) -> String {
         switch id {
         case  200...232:
         return iconURL + "art_storm.png"
