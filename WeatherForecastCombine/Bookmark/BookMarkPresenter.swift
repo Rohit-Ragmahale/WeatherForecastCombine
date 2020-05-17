@@ -34,7 +34,10 @@ class BookMarkPresenter {
 }
 
 extension BookMarkPresenter: WeatherModelDelegate {
-    
+    func bookmarkLimitReached() {
+        
+    }
+
     func weatherDataLoadFailedFor(pincode: String) {
         view?.showAlert(title: "Error", message: "Failed to get data for \(pincode)")
     }

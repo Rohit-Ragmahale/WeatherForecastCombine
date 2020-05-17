@@ -19,13 +19,14 @@ protocol PincodeProtocol {
 protocol WeatherModelDelegate {
     func modelDataUpdated()
     func weatherDataLoadFailedFor(pincode: String)
-    
+    func bookmarkLimitReached()
 }
 
 class WeatherModel: PincodeProtocol {
     
     internal var pincodes: [String] = []
     var presenter: WeatherModelDelegate?
+    static let max_bookmarkLimit = 5
     
     init() {
         DataSource.shared.addObserver(observer: self)
@@ -58,8 +59,12 @@ class WeatherModel: PincodeProtocol {
     }
     
     func bookmarkPincode(pincode: String) {
-        CoreDataManager.shared.bookmarkLocation(pincode: pincode)
-        DataSource.shared.bookmarkPincode(pincode: pincode)
+        if WeatherModel.max_bookmarkLimit > CoreDataManager.shared.getAllBookmarks().count {
+            CoreDataManager.shared.bookmarkLocation(pincode: pincode)
+            DataSource.shared.bookmarkPincode(pincode: pincode)
+        } else {
+            presenter?.bookmarkLimitReached()
+        }
     }
     
     func getWeatherFor(pincode: String) -> LocationWeatherData? {

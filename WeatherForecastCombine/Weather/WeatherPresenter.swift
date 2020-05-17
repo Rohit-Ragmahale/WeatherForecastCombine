@@ -44,6 +44,9 @@ class WeatherPresenter {
 }
 
 extension WeatherPresenter: WeatherModelDelegate {
+    func bookmarkLimitReached() {
+        view?.showAlert(title: "Error", message: "Can not bookmark. You can bookmark max \(WeatherModel.max_bookmarkLimit) locations")
+    }
     
     func weatherDataLoadFailedFor(pincode: String) {
         view?.showAlert(title: "Error", message: "Failed to get data for pin: \(pincode)")

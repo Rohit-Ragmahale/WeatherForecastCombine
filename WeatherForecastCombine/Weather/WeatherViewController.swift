@@ -52,6 +52,7 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension WeatherViewController:  WeatherPresenterDelegate {
+    
     func reloadData() {
         tableView.reloadData()
     }

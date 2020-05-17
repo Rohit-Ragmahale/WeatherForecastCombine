@@ -21,6 +21,8 @@
 		F953D69024713F3B00A422D8 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F953D68F24713F3B00A422D8 /* DateExtension.swift */; };
 		F953D69224714DEF00A422D8 /* ForecastListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F953D69124714DEF00A422D8 /* ForecastListViewController.swift */; };
 		F953D6942471551C00A422D8 /* ForecastListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F953D6932471551C00A422D8 /* ForecastListPresenter.swift */; };
+		F953D69B2471863700A422D8 /* ForecastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F953D6992471863700A422D8 /* ForecastTableViewCell.swift */; };
+		F953D69C2471863700A422D8 /* ForecastTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F953D69A2471863700A422D8 /* ForecastTableViewCell.xib */; };
 		F96BE9BF246C4053001A3A04 /* WeatherCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96BE9BE246C4053001A3A04 /* WeatherCoreData.swift */; };
 		F96BE9C2246C40B5001A3A04 /* Weather.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F96BE9C0246C40B5001A3A04 /* Weather.xcdatamodeld */; };
 		F96BE9C4246C4187001A3A04 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96BE9C3246C4187001A3A04 /* CoreDataManager.swift */; };
@@ -52,6 +54,8 @@
 		F953D68F24713F3B00A422D8 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		F953D69124714DEF00A422D8 /* ForecastListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastListViewController.swift; sourceTree = "<group>"; };
 		F953D6932471551C00A422D8 /* ForecastListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastListPresenter.swift; sourceTree = "<group>"; };
+		F953D6992471863700A422D8 /* ForecastTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastTableViewCell.swift; sourceTree = "<group>"; };
+		F953D69A2471863700A422D8 /* ForecastTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForecastTableViewCell.xib; sourceTree = "<group>"; };
 		F96BE9BE246C4053001A3A04 /* WeatherCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherCoreData.swift; sourceTree = "<group>"; };
 		F96BE9C1246C40B5001A3A04 /* Weather.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Weather.xcdatamodel; sourceTree = "<group>"; };
 		F96BE9C3246C4187001A3A04 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -128,6 +132,7 @@
 		F9419E92246B1A0C00707564 /* Forecast */ = {
 			isa = PBXGroup;
 			children = (
+				F953D698247185E700A422D8 /* ForecastCell */,
 				F953D69124714DEF00A422D8 /* ForecastListViewController.swift */,
 				F953D6932471551C00A422D8 /* ForecastListPresenter.swift */,
 			);
@@ -170,6 +175,15 @@
 				F953D68D24713F1D00A422D8 /* CommonExtensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		F953D698247185E700A422D8 /* ForecastCell */ = {
+			isa = PBXGroup;
+			children = (
+				F953D6992471863700A422D8 /* ForecastTableViewCell.swift */,
+				F953D69A2471863700A422D8 /* ForecastTableViewCell.xib */,
+			);
+			path = ForecastCell;
 			sourceTree = "<group>";
 		};
 		F96BE9BD246C4013001A3A04 /* CoreData */ = {
@@ -273,6 +287,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F953D69C2471863700A422D8 /* ForecastTableViewCell.xib in Resources */,
 				F988009F246D83E2008EF980 /* WeatherTableViewCell.xib in Resources */,
 				F9419E86246AFF1000707564 /* LaunchScreen.storyboard in Resources */,
 				F9419E83246AFF1000707564 /* Assets.xcassets in Resources */,
@@ -293,6 +308,7 @@
 				F988009E246D83E2008EF980 /* WeatherTableViewCell.swift in Sources */,
 				F98800A1246D988D008EF980 /* LocationWatherData.swift in Sources */,
 				F953D6942471551C00A422D8 /* ForecastListPresenter.swift in Sources */,
+				F953D69B2471863700A422D8 /* ForecastTableViewCell.swift in Sources */,
 				F9880095246D7C99008EF980 /* DataSource.swift in Sources */,
 				F909ECAA246C602A007F6FAF /* NetworkHelper.swift in Sources */,
 				F909ECA8246C5F66007F6FAF /* NetworkManager.swift in Sources */,

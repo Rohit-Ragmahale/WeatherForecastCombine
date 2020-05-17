@@ -30,10 +30,10 @@ class ForecastListPresenter {
     func getPincodeCount() -> Int {
         getLocationDataFor()?.forecasts.count ?? 0
     }
-    
-    func getWeatherDataForCellAtIndex(cell: WeatherTableViewCell, index: Int) {
+
+    func getWeatherDataForCellAtIndex(cell: ForecastTableViewCell, index: Int) {
         let data = getLocationDataFor()
-        cell.inflateWithForecast(weather: data?.forecasts[index], pincode: pincode)
+        cell.inflateWithForecast(weather: data?.forecasts[index])
     }
     
     func getTitle() -> String? {
