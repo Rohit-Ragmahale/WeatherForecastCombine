@@ -12,31 +12,39 @@ class ForecastListViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
-    var presenter = ForecastListPresenter(pincode: "")
+    var presenter: ForecastListPresenter?
 
+    static func initWith(presenter: ForecastListPresenter) -> ForecastListViewController {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let forecastVC = storyboard.instantiateViewController(withIdentifier: "ForecastListViewController")
+        as! ForecastListViewController
+        forecastVC.presenter = presenter
+        return forecastVC
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.register(UINib(nibName: "ForecastTableViewCell", bundle: nil), forCellReuseIdentifier: "ForecastTableViewCell")
-        presenter.attachView(view: self)
-        presenter.loadForecast()
+        presenter?.attachView(view: self)
+        presenter?.loadForecast()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        title = presenter.getTitle()
+        title = presenter?.getTitle()
         tableView.reloadData()
     }
 }
 
 extension ForecastListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter.getPincodeCount()
+        presenter?.getPincodeCount() ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "ForecastTableViewCell", for: indexPath) as? ForecastTableViewCell {
-            presenter.getWeatherDataForCellAtIndex(cell: cell, index: indexPath.row)
+            presenter?.getWeatherDataForCellAtIndex(cell: cell, index: indexPath.row)
             return cell
         }
         return UITableViewCell()

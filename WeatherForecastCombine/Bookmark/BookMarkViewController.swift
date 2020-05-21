@@ -12,13 +12,21 @@ class BookMarkViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
-    private var presenter = BookMarkPresenter()
+    private var presenter: BookMarkPresenter?
+    
+    static func initWith(presenter: BookMarkPresenter) -> BookMarkViewController {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let bookmarkVC = storyboard.instantiateViewController(withIdentifier: "BookMarkViewController")
+        as! BookMarkViewController
+        bookmarkVC.presenter = presenter
+        return bookmarkVC
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Bookmarks"
         tableView.register(UINib(nibName: "WeatherTableViewCell", bundle: nil), forCellReuseIdentifier: "WeatherTableViewCell")
-        presenter.attachView(view: self) 
+        presenter?.attachView(view: self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -28,13 +36,13 @@ class BookMarkViewController: UIViewController {
 
 extension BookMarkViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter.getPincodeCount()
+        presenter?.getPincodeCount() ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherTableViewCell", for: indexPath) as? WeatherTableViewCell {
-            presenter.getWeatherDataForCellAtIndex(cell: cell, index: indexPath.row)
+            presenter?.getWeatherDataForCellAtIndex(cell: cell, index: indexPath.row)
             return cell
         }
         return UITableViewCell()

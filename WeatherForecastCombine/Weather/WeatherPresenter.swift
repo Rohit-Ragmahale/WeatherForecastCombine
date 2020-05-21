@@ -16,10 +16,12 @@ protocol WeatherPresenterDelegate {
 }
 
 class WeatherPresenter {
+    var navigator: WeatherForecastNavigator
     var view : WeatherPresenterDelegate?
     var model: WeatherModel = WeatherModel()
     
-    init() {
+    init(navigator: WeatherForecastNavigator) {
+        self.navigator = navigator
         model.attachPresenter(presenter: self)
     }
     
@@ -61,12 +63,7 @@ extension WeatherPresenter: WeatherModelDelegate {
 extension WeatherPresenter: ActionDelegate {
     
       func getForecast(pincode: String) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let forecastVC = storyboard.instantiateViewController(withIdentifier: "ForecastListViewController")
-            as? ForecastListViewController {
-            forecastVC.presenter = ForecastListPresenter(pincode: pincode)
-            view?.presentVC(viewController: forecastVC)
-        }
+        navigator.showWatherForecast(pincode: pincode)
     }
 
     func boookmarkPincode(pincode: String) {
