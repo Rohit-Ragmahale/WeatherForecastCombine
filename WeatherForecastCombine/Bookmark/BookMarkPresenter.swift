@@ -10,10 +10,12 @@ import Foundation
 import UIKit
 
 class BookMarkPresenter {
+    let navigator: WeatherForecastNavigator
     var view : WeatherPresenterDelegate?
     var model: BookmarkDataModel = BookmarkDataModel()
     
-    init() {
+    init(navigator: WeatherForecastNavigator) {
+        self.navigator = navigator
         model.attachPresenter(presenter: self)
     }
 
@@ -50,12 +52,7 @@ extension BookMarkPresenter: WeatherModelDelegate {
 
 extension BookMarkPresenter: ActionDelegate {
     func getForecast(pincode: String) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let forecastVC = storyboard.instantiateViewController(withIdentifier: "ForecastListViewController")
-            as? ForecastListViewController {
-            forecastVC.presenter = ForecastListPresenter(pincode: pincode)
-            view?.presentVC(viewController: forecastVC)
-        }
+        navigator.showWatherForecast(pincode: pincode)
     }
     
     func boookmarkPincode(pincode: String) {
