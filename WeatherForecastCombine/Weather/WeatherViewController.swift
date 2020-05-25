@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Combine
 
 class WeatherViewController: UIViewController {
 
@@ -95,5 +94,3 @@ extension WeatherViewController:  WeatherPresenterDelegate {
         present(UINavigationController(rootViewController: viewController), animated: true, completion: nil)
     }
 }
-
-
