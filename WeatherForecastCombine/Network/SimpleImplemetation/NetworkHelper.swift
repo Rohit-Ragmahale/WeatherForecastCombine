@@ -9,8 +9,8 @@
 import Foundation
 
 protocol NetworkHelperDelegate {
-    func weatherLoadedFor(pin: String, data: [String : Any]?)
-    func forecastsLoadedFor(pin: String, data: [String : Any]?)
+    func weatherLoadedFor(city: String, data: [String : Any]?)
+    func forecastsLoadedFor(city: String, data: [String : Any]?)
 }
 
 class NetworkHelperObserver {
@@ -43,31 +43,31 @@ class NetworkHelper {
         
     }
     
-    func loadCurrentWeather(zipcode: String) {
-       let urlString: String = "\(baseURL)/weather?q=\(zipcode)&units=metric&APPID=\(kAppId)&lang=en"
+    func loadCurrentWeather(city: String) {
+       let urlString: String = "\(baseURL)/weather?q=\(city)&units=metric&APPID=\(kAppId)&lang=en"
         NetworkManager.shared.downloadData(url: urlString) { (data: [String : Any]?) in
             DispatchQueue.main.async {
                 for observer: NetworkHelperObserver in self.observers {
-                    observer.observer?.weatherLoadedFor(pin: zipcode, data: data)
+                    observer.observer?.weatherLoadedFor(city: city, data: data)
                 }
             }
         }
      }
     
     
-    func loadCurrentWeather(zipcode: String, completion:@escaping ((_ pincode: String, _ data: [String : Any]? ) -> Void)) {
-      let urlString: String = "\(baseURL)/weather?zip=\(zipcode)&units=metric&APPID=\(kAppId)"
+    func loadCurrentWeather(city: String, completion:@escaping ((_ city: String, _ data: [String : Any]? ) -> Void)) {
+      let urlString: String = "\(baseURL)/weather?zip=\(city)&units=metric&APPID=\(kAppId)"
         NetworkManager.shared.downloadData(url: urlString) { (data: [String : Any]?) in
-            completion(zipcode, data)
+            completion(city, data)
         }
     }
      
-    func loadForecast(cityCode: CLongLong, pincode: String) {
+    func loadForecast(cityCode: CLongLong, city: String) {
        let urlString: String = "\(baseURL)/forecast?id=\(cityCode)&units=metric&cnt=5&APPID=\(kAppId)&cnt=5"
         NetworkManager.shared.downloadData(url: urlString) { (data: [String : Any]?) in
             DispatchQueue.main.async {
                 for observer: NetworkHelperObserver in self.observers {
-                    observer.observer?.forecastsLoadedFor(pin: pincode, data: data)
+                    observer.observer?.forecastsLoadedFor(city: city, data: data)
                 }
             }
         }

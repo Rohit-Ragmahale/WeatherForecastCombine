@@ -8,17 +8,7 @@
 
 import Foundation
 
-struct Coordinate {
-    var lat: Double
-    var long: Double
-    
-    static func getCoordinate(data: [String : Double]?) -> Coordinate?  {
-        if let coord = data, let lat = coord["lat"], let lon = coord["lon"]  {
-            return Coordinate(lat: lat, long:lon)
-        }
-        return nil
-    }
-}
+
 
 class Forecast {
     var date: Date?
@@ -100,6 +90,10 @@ class LocationWeatherData {
         weather = Forecast(data: data)
     }
 }
+
+
+
+
 
 /*
  {

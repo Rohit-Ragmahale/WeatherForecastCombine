@@ -9,7 +9,7 @@
 import UIKit
 
 protocol WeatherForecastNavigator: class  {
-    func showWatherForecast(pincode: String)
+    func showWatherForecast(city: String)
 }
 
 class WeatherSearchCoordinator: Coordinator {
@@ -28,8 +28,8 @@ class WeatherSearchCoordinator: Coordinator {
 }
 
 extension WeatherSearchCoordinator: WeatherForecastNavigator {
-    func showWatherForecast(pincode: String) {
-        let forecastCoordinator = ForecastCoordinator(navigator: navController, pincode: pincode)
+    func showWatherForecast(city: String) {
+        let forecastCoordinator = ForecastCoordinator(navigator: navController, city: city)
         forecastCoordinator.start()
         childCoordinator = [forecastCoordinator]
     }

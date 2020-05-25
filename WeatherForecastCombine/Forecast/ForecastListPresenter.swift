@@ -7,42 +7,51 @@
 //
 
 import Foundation
+import Combine
 
 class ForecastListPresenter {
     var view : WeatherPresenterDelegate?
-    let pincode: String
-    init(pincode: String) {
-        self.pincode = pincode
-        DataSource.shared.addObserver(observer: self)
+    let city: String
+    
+    var cancellable: AnyCancellable?
+    
+    init(city: String) {
+        self.city = city
+        //DataSource.shared.addObserver(observer: self)
+        cancellable = DataSource.shared.forecastLoded.sink { () in
+            DispatchQueue.main.async {
+                self.view?.reloadData()
+            }
+        }
     }
     
     func attachView(view: WeatherPresenterDelegate) {
         self.view = view
     }
     
-    private func getLocationDataFor() -> LocationWeatherData?  {
-        if let locationWeatherData = DataSource.shared.getLocationWeatherDataFor(pincode: pincode) {
+    private func getLocationDataFor() -> CityWeatherData?  {
+        if let locationWeatherData = DataSource.shared.getCityWeatherDataFor(city: city) {
             return locationWeatherData
         }
         return nil
     }
     
-    func getPincodeCount() -> Int {
-        getLocationDataFor()?.forecasts.count ?? 0
+    func forecastsCount() -> Int {
+        getLocationDataFor()?.futureForecast.count ?? 0
     }
 
     func getWeatherDataForCellAtIndex(cell: ForecastTableViewCell, index: Int) {
         let data = getLocationDataFor()
-        cell.inflateWithForecast(weather: data?.forecasts[index])
+        cell.inflateWithForecast(weather: data?.futureForecast[index])
     }
     
     func getTitle() -> String? {
-        return getLocationDataFor()?.locationDetails?.city
+        return getLocationDataFor()?.name
     }
     
     func loadForecast() {
-        if getPincodeCount() == 0 {
-            DataSource.shared.getForecastForLocation(selectedLocation: pincode)
+        if forecastsCount() == 0 {
+            DataSource.shared.loadForecastWeather(city:city.lowercased())
         } else {
             view?.reloadData()
         }
@@ -51,11 +60,11 @@ class ForecastListPresenter {
 
 extension ForecastListPresenter: DataSourceDelegate  {
     
-    func forecastDataLoadFailedFor(pincode: String) {
-        view?.showAlert(title: "Error", message: "Failed to get forecast data for \(pincode)")
+    func forecastDataLoadFailedFor(city: String) {
+        view?.showAlert(title: "Error", message: "Failed to get forecast data for \(city)")
     }
     
-    func weatherDataLoadFailedFor(pincode: String) {
+    func weatherDataLoadFailedFor(city: String) {
         
     }
     

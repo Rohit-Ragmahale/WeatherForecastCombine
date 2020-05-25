@@ -33,14 +33,14 @@ class CoreDataManager {
     static let shared = CoreDataManager()
     private init() {}
    
-    func bookmarkLocation(pincode: String) {
-         let bookmarkedEntiries: [BookMark] = Entity<BookMark>.fetch(onContext: WeatherCoreData.shared.mainContext(), predicate:NSPredicate(format: "pincode = '\(pincode)'"))
+    func bookmarkLocation(city: String) {
+         let bookmarkedEntiries: [BookMark] = Entity<BookMark>.fetch(onContext: WeatherCoreData.shared.mainContext(), predicate:NSPredicate(format: "pincode = '\(city)'"))
         if let bookmark = bookmarkedEntiries.first {
-            bookmark.pincode = pincode
+            bookmark.pincode = city
             WeatherCoreData.shared.mainContext().saveContext()
         } else {
             if let bookmark: BookMark = Entity<BookMark>.create(onContext: WeatherCoreData.shared.mainContext()) {
-                bookmark.pincode = pincode
+                bookmark.pincode = city
                 WeatherCoreData.shared.mainContext().saveContext()
             }
         }
@@ -60,10 +60,10 @@ class CoreDataManager {
         return bookmarks
     }
 
-    func deleteBookmark(pin: String) {
-        if !pin.isEmpty {
+    func deleteBookmark(city: String) {
+        if !city.isEmpty {
             Entity<BookMark>.deleteAllObjectsOfType(
-                predicate: NSPredicate(format: "pincode = '\(pin)'"),
+                predicate: NSPredicate(format: "pincode = '\(city)'"),
                 context: WeatherCoreData.shared.mainContext())
             WeatherCoreData.shared.mainContext().saveContext()
         }

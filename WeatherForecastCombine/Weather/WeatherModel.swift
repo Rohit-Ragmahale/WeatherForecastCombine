@@ -8,17 +8,17 @@
 
 import Foundation
 import UIKit
+import Combine
 
 protocol PincodeProtocol {
     var pincodes: [String]{get}
-    func addPincode(pin : String)
-    func removePincode(pin: String)
-    func getAllpincodes() -> [String]
+    func addPincode(city : String)
+    func removePincode(city: String)
 }
 
 protocol WeatherModelDelegate {
     func modelDataUpdated()
-    func weatherDataLoadFailedFor(pincode: String)
+    func weatherDataLoadFailedFor(city: String)
     func bookmarkLimitReached()
 }
 
@@ -27,29 +27,45 @@ class WeatherModel: PincodeProtocol {
     internal var pincodes: [String] = []
     var presenter: WeatherModelDelegate?
     static let max_bookmarkLimit = 5
+
+    internal var cityWeatherData: [CityWeatherData] = []
+    var anyCancellable: [AnyCancellable] = []
     
     init() {
         DataSource.shared.addObserver(observer: self)
+        DataSource.shared.$cityWeatherDataList.map { (cityData) -> [CityWeatherData] in
+            return cityData.filter { (data) -> Bool in
+                self.pincodes.contains(data.name.lowercased())
+            }
+        }.sink { (data) in
+            DispatchQueue.main.async {
+                print("\n\nDataUpdate")
+                self.cityWeatherData.removeAll()
+                self.cityWeatherData.append(contentsOf: data)
+                self.presenter?.modelDataUpdated()
+            }
+        }
+        .store(in: &anyCancellable)
+    }
+
+    func cityWeatherDataList() -> [CityWeatherData] {
+        return cityWeatherData
     }
     
 // MARK: PincodeProtocol
-    func addPincode(pin: String) {
-        if !pincodes.contains(pin.lowercased()) {
-            pincodes.append(pin.lowercased())
-            if let _ = getWeatherFor(pincode: pin) {
-                presenter?.modelDataUpdated()
+    func addPincode(city: String) {
+        if !pincodes.contains(city.lowercased()) {
+            pincodes.append(city.lowercased())
+            if let cityData = DataSource.shared.getCityWeatherDataFor(city: city) {
+                cityWeatherData.append(cityData)
             }
         }
     }
 
-    func removePincode(pin: String) {
-        if let index = pincodes.firstIndex(of: pin) {
+    func removePincode(city: String) {
+        if let index = pincodes.firstIndex(of: city) {
             pincodes.remove(at:index)
         }
-    }
-
-    func getAllpincodes() -> [String] {
-        return pincodes
     }
 
 // MARK: Public helpers
@@ -58,34 +74,33 @@ class WeatherModel: PincodeProtocol {
         self.presenter = presenter
     }
     
-    func bookmarkPincode(pincode: String) {
+    func bookmarkPincode(city: String) {
         if WeatherModel.max_bookmarkLimit > CoreDataManager.shared.getAllBookmarks().count {
-            CoreDataManager.shared.bookmarkLocation(pincode: pincode)
-            DataSource.shared.bookmarkPincode(pincode: pincode)
+            CoreDataManager.shared.bookmarkLocation(city: city)
+            DataSource.shared.bookmarkCity(city: city)
         } else {
             presenter?.bookmarkLimitReached()
         }
     }
     
-    func getWeatherFor(pincode: String) -> LocationWeatherData? {
-        if let locationWeatherData = DataSource.shared.getLocationWeatherDataFor(pincode: pincode) {
-            return locationWeatherData
-        } else {
-            let locationWeatherData = LocationWeatherData(pincode: pincode, isSearched: true, isBookmarked: false)
-            DataSource.shared.loadCurrentWeather(locationWeatherData: locationWeatherData)
-            return locationWeatherData
+    func getWeatherFor(city: String) -> CityWeatherData? {
+        guard  let locationWeatherData = DataSource.shared.getCityWeatherDataFor(city: city) else {
+            addPincode(city: city)
+            DataSource.shared.loadCurrentWeather(city: city)
+            return nil
         }
+        return locationWeatherData
     }
 }
 
 extension WeatherModel: DataSourceDelegate {
     
-    func forecastDataLoadFailedFor(pincode: String) {
+    func forecastDataLoadFailedFor(city: String) {
     }
     
-    func weatherDataLoadFailedFor(pincode: String) {
-        removePincode(pin: pincode)
-        presenter?.weatherDataLoadFailedFor(pincode: pincode)
+    func weatherDataLoadFailedFor(city: String) {
+        removePincode(city: city)
+        presenter?.weatherDataLoadFailedFor(city: city)
     }
     
     func forecastDataUpdated() {

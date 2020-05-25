@@ -13,6 +13,10 @@ class WeatherViewController: UIViewController {
     @IBOutlet weak var picodeTextField: UITextField!
     @IBOutlet weak var tableView: UITableView!
     
+    @Published var searchSubject = PassthroughSubject<String, Never>()
+    
+    var publishers: [AnyCancellable] = []
+    
     private var presenter: WeatherPresenter?
 
     
@@ -26,8 +30,9 @@ class WeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //learningCombineStudy()
+        learningCombineStudy()
         title = "Search City Weather"
+         bind(presenter: presenter!)
         tableView.register(UINib(nibName: "WeatherTableViewCell", bundle: nil), forCellReuseIdentifier: "WeatherTableViewCell")
         presenter?.attachView(view: self)
     }
@@ -39,11 +44,20 @@ class WeatherViewController: UIViewController {
     @IBAction func userTappedSearchButton(_ sender: Any) {
         picodeTextField.resignFirstResponder()
         if let text = picodeTextField.text, text.count > 0 {
-            presenter?.searchCurruntWeather(pincode: text)
+            searchSubject.send(text)
         }
         picodeTextField.text = ""
     }
 
+}
+
+extension WeatherViewController {
+    func bind(presenter: WeatherPresenter) {
+        let publisher = self.searchSubject.sink { (searchCity) in
+            presenter.searchCurruntWeather(city: searchCity)
+        }
+        publishers.append(publisher)
+    }
 }
 
 extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {

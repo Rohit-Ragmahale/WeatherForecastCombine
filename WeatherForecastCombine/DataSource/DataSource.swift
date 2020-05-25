@@ -7,12 +7,13 @@
 //
 
 import Foundation
+import Combine
 
 protocol DataSourceDelegate {
     func weatherDataUpdated()
     func forecastDataUpdated()
-    func weatherDataLoadFailedFor(pincode: String)
-    func forecastDataLoadFailedFor(pincode: String)
+    func weatherDataLoadFailedFor(city: String)
+    func forecastDataLoadFailedFor(city: String)
 }
 
 class DataSourceObserver {
@@ -23,15 +24,25 @@ class DataSourceObserver {
 }
 
 class DataSource {
+    
+    var cancellables: [AnyCancellable] = []
+    var bookmarkSubject = PassthroughSubject<CityWeatherData, Never>()
+    var removeBookmarkSubject = PassthroughSubject<String, Never>()
+    var forecastLoded = PassthroughSubject<Void, Never>()
+    
     static let shared = DataSource()
     private var observers: [DataSourceObserver] = []
     
     private var locationWeatherDataList: [LocationWeatherData] = []
     
+    @Published var cityWeatherDataList: [CityWeatherData] = []
+    
     private var selectedLocationForForecast: String?
     
+    
+    
     private init() {
-        NetworkHelper.shared.addObserver(observer: self)
+    
     }
     
     func addObserver(observer: DataSourceDelegate) {
@@ -44,60 +55,79 @@ class DataSource {
     
     func loadCurrentWeather(locationWeatherData: LocationWeatherData) {
         locationWeatherDataList.insert(locationWeatherData, at: 0)
-        NetworkHelper.shared.loadCurrentWeather(zipcode: locationWeatherData.pincode)
+        NetworkHelper.shared.loadCurrentWeather(city: locationWeatherData.pincode)
     }
-        
-    func bookmarkPincode(pincode: String, shouldBookMark: Bool = true) {
-        if let locationWeatherData = getLocationWeatherDataFor(pincode: pincode) {
-            locationWeatherData.isBookmarked = shouldBookMark
-            for observer: DataSourceObserver in self.observers {
-                observer.observer?.weatherDataUpdated()
-            }
-        }
-    }
+//
+//    func bookmarkPincode(city: String, shouldBookMark: Bool = true) {
+//        if let locationWeatherData = getLocationWeatherDataFor(city: city) {
+//            locationWeatherData.isBookmarked = shouldBookMark
+//            for observer: DataSourceObserver in self.observers {
+//                observer.observer?.weatherDataUpdated()
+//            }
+//        }
+//    }
 
-    func getLocationWeatherDataFor(pincode: String) -> LocationWeatherData? {
-        locationWeatherDataList.filter { (data: LocationWeatherData) -> Bool in
-            data.pincode.lowercased() == pincode.lowercased()
+
+//
+//    func getForecastForLocation(selectedCity: String) {
+//        selectedLocationForForecast = selectedCity
+//        if let location = selectedLocationForForecast, let cityCode = getLocationWeatherDataFor(city: location)?.locationDetails?.cityCode {
+//            NetworkHelper.shared.loadForecast(cityCode: cityCode, city: selectedCity)
+//        }
+//    }
+
+    func getCityWeatherDataFor(city: String) -> CityWeatherData? {
+        cityWeatherDataList.filter { (data: CityWeatherData) -> Bool in
+            data.name.lowercased() == city.lowercased()
         }.first
     }
-
-    func getForecastForLocation(selectedLocation: String) {
-        selectedLocationForForecast = selectedLocation
-        if let location = selectedLocationForForecast, let cityCode = getLocationWeatherDataFor(pincode: location)?.locationDetails?.cityCode {
-            NetworkHelper.shared.loadForecast(cityCode: cityCode, pincode: selectedLocation)
-        }
-    }
-}
-
-extension DataSource: NetworkHelperDelegate {
     
-    func weatherLoadedFor(pin pincode: String, data: [String : Any]?) {
-        if let data = data,  let locationWeatherData = getLocationWeatherDataFor(pincode: pincode) {
-            locationWeatherData.updateWeatherDetails(data: data)
-            for observer: DataSourceObserver in self.observers {
-                observer.observer?.weatherDataUpdated()
+    func bookmarkCity(city: String, shouldBookMark: Bool = true) {
+        if shouldBookMark {
+            if let calue = getCityWeatherDataFor(city: city) {
+                bookmarkSubject.send(calue)
             }
         } else {
-            for observer: DataSourceObserver in self.observers {
-                observer.observer?.weatherDataLoadFailedFor(pincode: pincode)
+            cityWeatherDataList = cityWeatherDataList.filter { (data) -> Bool in
+                data.name.lowercased() != city.lowercased()
             }
+            removeBookmarkSubject.send(city)
         }
-    }
-
-    func forecastsLoadedFor(pin: String, data: [String : Any]?) {
-        print("Forecast \(String(describing: data))")
-        if let data = data?["list"] as? [Any],  let locationWeatherData = getLocationWeatherDataFor(pincode: pin) {
-                locationWeatherData.updateForecastDetails(list: data)
-            for observer: DataSourceObserver in self.observers {
-                observer.observer?.forecastDataUpdated()
-            }
-        } else {
-            for observer: DataSourceObserver in self.observers {
-                observer.observer?.forecastDataLoadFailedFor(pincode: pin)
-            }
-        }
-
     }
     
+    func loadCurrentWeather(city: String) {
+        NetworkService.shared.load(networkRequest: NetworkRequest<CityWeatherData>.currentWeather(city: city)).sink { (result: Result<CityWeatherData, NetworkError>) in
+            switch result {
+            case .success(let data):
+                print("\n\n")
+                self.cityWeatherDataList.append(data)
+                print("\n\n")
+            case .failure(let error):
+                print("fail " + error.localizedDescription)
+            }
+        }
+        .store(in: &cancellables)
+    }
+    
+    func loadForecastWeather(city: String) {
+        let code = getCityWeatherDataFor(city: city)?.id
+        selectedLocationForForecast = city
+        if let cityCode = code {
+            NetworkService.shared.load(networkRequest: NetworkRequest<FutureForecastList>.forecastWeather(cityCode: "\(cityCode)")).sink { (result: Result<FutureForecastList, NetworkError>) in
+                switch result {
+                case .success(let data):
+                    print("\n\n")
+                    if let city = self.getCityWeatherDataFor(city: city) {
+                        city.futureForecast.append(contentsOf: data.list)
+                    }
+                    self.forecastLoded.send()
+                case .failure(let error):
+                    print("fail " + error.localizedDescription)
+                }
+            }
+            .store(in: &cancellables)
+        }
+        
+        
+    }
 }

@@ -25,15 +25,13 @@ class ForecastTableViewCell: UITableViewCell {
         humidity.text = ""
     }
 
-    func inflateWithForecast(weather: Forecast?) {
+    func inflateWithForecast(weather: DayForecast?) {
         if let weather = weather {
             date.text = weather.date?.getDateText()
-            if let url = weather.url {
-                 weatherImageView.load(url: url, placeholder: UIImage())
-            }
-            tempDescription.text = weather.description
-            temperatureDetails.text = "Temp: \(weather.temp?.toString() ?? "NA")\n(Min: \(weather.temp_min?.toString() ?? "NA") Max:\(weather.temp_max?.toString() ?? "NA"))"
-            humidity.text = "Humidity: \(weather.humidity?.toString() ?? "NA")"
+            weatherImageView.load(url: weather.imageURL(), placeholder: UIImage())
+            tempDescription.text = weather.weatherDescription
+            temperatureDetails.text = "Temp: \(weather.temperature.toString())"
+            humidity.text = "Humidity: \(weather.humidity.toString())"
         } else {
             date.text = ""
             tempDescription.text = "Details Not available"
