@@ -94,10 +94,8 @@
             filePath = "WeatherForecastCombine/Weather/WeatherViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-
-            startingLineNumber = "71"
-            endingLineNumber = "71"
-
+            startingLineNumber = "72"
+            endingLineNumber = "72"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -112,12 +110,10 @@
             filePath = "WeatherForecastCombine/Weather/WeatherViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-
-            landmarkName = "tableView(_:numberOfRowsInSection:)"
-            landmarkType = "7">
+            startingLineNumber = "67"
+            endingLineNumber = "67"
+            landmarkName = "WeatherViewController"
+            landmarkType = "21">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -130,10 +126,8 @@
             filePath = "WeatherForecastCombine/Weather/WeatherViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-
-            startingLineNumber = "87"
-            endingLineNumber = "87"
-
+            startingLineNumber = "88"
+            endingLineNumber = "88"
             landmarkName = "showAlert(title:message:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -612,8 +606,8 @@
             filePath = "WeatherForecastCombine/Weather/WeatherViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "48"
-            endingLineNumber = "48"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
             landmarkName = "userTappedSearchButton(_:)"
             landmarkType = "7">
          </BreakpointContent>
