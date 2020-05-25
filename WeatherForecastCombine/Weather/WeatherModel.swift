@@ -10,10 +10,10 @@ import Foundation
 import UIKit
 import Combine
 
-protocol PincodeProtocol {
-    var pincodes: [String]{get}
-    func addPincode(city : String)
-    func removePincode(city: String)
+protocol CityListProtocol {
+    var cityList: [String]{get}
+    func addCity(city : String)
+    func removeCity(city: String)
 }
 
 protocol WeatherModelDelegate {
@@ -22,9 +22,9 @@ protocol WeatherModelDelegate {
     func bookmarkLimitReached()
 }
 
-class WeatherModel: PincodeProtocol {
+class WeatherModel: CityListProtocol {
     
-    internal var pincodes: [String] = []
+    internal var cityList: [String] = []
     var presenter: WeatherModelDelegate?
     static let max_bookmarkLimit = 5
 
@@ -34,7 +34,7 @@ class WeatherModel: PincodeProtocol {
     init() {
         DataSource.shared.$cityWeatherDataList.map { (cityData) -> [CityWeatherData] in
             return cityData.filter { (data) -> Bool in
-                self.pincodes.contains(data.name.lowercased())
+                self.cityList.contains(data.name.lowercased())
             }
         }.sink { (data) in
             DispatchQueue.main.async {
@@ -52,18 +52,18 @@ class WeatherModel: PincodeProtocol {
     }
     
 // MARK: PincodeProtocol
-    func addPincode(city: String) {
-        if !pincodes.contains(city.lowercased()) {
-            pincodes.append(city.lowercased())
+    func addCity(city: String) {
+        if !cityList.contains(city.lowercased()) {
+            cityList.append(city.lowercased())
             if let cityData = DataSource.shared.getCityWeatherDataFor(city: city) {
                 cityWeatherData.append(cityData)
             }
         }
     }
 
-    func removePincode(city: String) {
-        if let index = pincodes.firstIndex(of: city) {
-            pincodes.remove(at:index)
+    func removeCity(city: String) {
+        if let index = cityList.firstIndex(of: city) {
+            cityList.remove(at:index)
         }
     }
 
@@ -84,7 +84,7 @@ class WeatherModel: PincodeProtocol {
     
     func getWeatherFor(city: String) -> CityWeatherData? {
         guard  let locationWeatherData = DataSource.shared.getCityWeatherDataFor(city: city) else {
-            addPincode(city: city)
+            addCity(city: city)
             DataSource.shared.loadCurrentWeather(city: city)
             return nil
         }

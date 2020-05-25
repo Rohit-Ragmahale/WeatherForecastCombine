@@ -19,8 +19,11 @@ class ForecastCoordinator: Coordinator {
     }
     
     func start() {
-         let presenter = ForecastListPresenter(city: city)
-         let forecastVC = ForecastListViewController.initWith(presenter: presenter)
+         //let presenter = ForecastListPresenter(city: city)
+         
+         let viewModel = ForecastDetailsViewModel(city: city)
+        
+         let forecastVC = ForecastListViewController.initWith(viewModel: viewModel)
         navigator.present(UINavigationController(rootViewController: forecastVC), animated: true) { }
     }
 }

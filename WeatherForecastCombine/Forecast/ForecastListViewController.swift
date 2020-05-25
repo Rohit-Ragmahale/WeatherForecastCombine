@@ -7,12 +7,21 @@
 //
 
 import UIKit
+import Combine
+
+
 
 class ForecastListViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
     var presenter: ForecastListPresenter?
+    
+    var viewModel: ForecastDetailsViewModel?
+    private var cancellbales: [AnyCancellable] = []
+    private var appear = PassthroughSubject<Void, Never>()
+    private var data: [DayForecast] = []
+    
 
     static func initWith(presenter: ForecastListPresenter) -> ForecastListViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -22,29 +31,62 @@ class ForecastListViewController: UIViewController {
         return forecastVC
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        tableView.register(UINib(nibName: "ForecastTableViewCell", bundle: nil), forCellReuseIdentifier: "ForecastTableViewCell")
-        presenter?.attachView(view: self)
-        presenter?.loadForecast()
+    static func initWith(viewModel: ForecastDetailsViewModel) -> ForecastListViewController {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let forecastVC = storyboard.instantiateViewController(withIdentifier: "ForecastListViewController")
+        as! ForecastListViewController
+        forecastVC.viewModel = viewModel
+        return forecastVC
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.register(UINib(nibName: "ForecastTableViewCell", bundle: nil), forCellReuseIdentifier: "ForecastTableViewCell")
+        bind(to: viewModel!)
+    }
+
+    
+    func bind(to: ForecastDetailsViewModel) {
+        let input = ForecastDetailsViewModelInput(appear: appear.eraseToAnyPublisher())
+        
+        let output = to.transform(input: input)
+        
+        output.sink { (state: ForecastDetailsState) in
+            DispatchQueue.main.async {
+                self.render(state)
+            }
+        }
+        .store(in: &cancellbales)
+    }
+    
+    private func render(_ state: ForecastDetailsState) {
+        switch state {
+        case .loading:
+             title = "Loading.."
+        case .failure:
+            title = viewModel?.city
+            showAlert(title: "Error", message: "failed")
+        case .success(let data):
+            self.data = data
+            title = viewModel?.city
+            tableView.reloadData()
+        }
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        title = presenter?.getTitle()
-        tableView.reloadData()
+        appear.send()
     }
 }
 
 extension ForecastListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter?.forecastsCount() ?? 0
+        data.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "ForecastTableViewCell", for: indexPath) as? ForecastTableViewCell {
-            presenter?.getWeatherDataForCellAtIndex(cell: cell, index: indexPath.row)
+            cell.inflateWithForecast(weather: data[indexPath.row])
             return cell
         }
         return UITableViewCell()

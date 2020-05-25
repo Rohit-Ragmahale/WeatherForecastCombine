@@ -17,7 +17,6 @@ class ForecastListPresenter {
     
     init(city: String) {
         self.city = city
-        //DataSource.shared.addObserver(observer: self)
         cancellable = DataSource.shared.forecastLoded.sink { () in
             DispatchQueue.main.async {
                 self.view?.reloadData()

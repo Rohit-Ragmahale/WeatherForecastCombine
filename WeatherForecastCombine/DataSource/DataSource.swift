@@ -63,25 +63,40 @@ class DataSource {
         .store(in: &cancellables)
     }
     
-    func loadForecastWeather(city: String) {
-        let code = getCityWeatherDataFor(city: city)?.id
+    func loadForecastWeather(city: String) -> AnyPublisher<Result<[DayForecast], NetworkError>, Never> {
+        let code = getCityWeatherDataFor(city: city)!.id
         selectedLocationForForecast = city
-        if let cityCode = code {
-            NetworkService.shared.load(networkRequest: NetworkRequest<FutureForecastList>.forecastWeather(cityCode: "\(cityCode)")).sink { (result: Result<FutureForecastList, NetworkError>) in
+        
+        return NetworkService.shared.load(networkRequest: NetworkRequest<FutureForecastList>.forecastWeather(cityCode: "\(code)"))
+            .map({ (result: Result<FutureForecastList, NetworkError>) -> Result<[DayForecast], NetworkError> in
                 switch result {
-                case .success(let data):
-                    print("\n\n")
-                    if let city = self.getCityWeatherDataFor(city: city) {
-                        city.futureForecast.append(contentsOf: data.list)
-                    }
-                    self.forecastLoded.send()
-                case .failure(let error):
-                    print("fail " + error.localizedDescription)
+                case .success(let data): return .success(data.list)
+                case .failure(let error): return .failure(error)
                 }
-            }
-            .store(in: &cancellables)
-        }
-        
-        
+            })
+            .eraseToAnyPublisher()
     }
+    
+    
+//    func loadForecastWeather(city: String) {
+//        let code = getCityWeatherDataFor(city: city)?.id
+//        selectedLocationForForecast = city
+//        if let cityCode = code {
+//            NetworkService.shared.load(networkRequest: NetworkRequest<FutureForecastList>.forecastWeather(cityCode: "\(cityCode)")).sink { (result: Result<FutureForecastList, NetworkError>) in
+//                switch result {
+//                case .success(let data):
+//                    print("\n\n")
+//                    if let city = self.getCityWeatherDataFor(city: city) {
+//                        city.futureForecast.append(contentsOf: data.list)
+//                    }
+//                    self.forecastLoded.send()
+//                case .failure(let error):
+//                    print("fail " + error.localizedDescription)
+//                }
+//            }
+//            .store(in: &cancellables)
+//        }
+//
+//
+//    }
 }

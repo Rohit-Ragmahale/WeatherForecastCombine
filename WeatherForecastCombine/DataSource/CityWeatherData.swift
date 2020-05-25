@@ -106,6 +106,16 @@ struct DayForecast {
     }
 }
 
+extension DayForecast: Hashable {
+    static func == (lhs: DayForecast, rhs: DayForecast) -> Bool {
+        return lhs.date == rhs.date
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(date)
+    }
+}
+
 class CityWeatherData: Decodable {
     var name: String = ""
     var id: CLongLong = 0

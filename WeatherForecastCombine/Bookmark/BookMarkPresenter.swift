@@ -55,6 +55,6 @@ extension BookMarkPresenter: ActionDelegate {
     }
     
     func boookmarkPincode(city: String) {
-        model.removePincode(city: city)
+        model.removeCity(city: city)
     }
 }

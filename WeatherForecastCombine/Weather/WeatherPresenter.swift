@@ -48,7 +48,7 @@ class WeatherPresenter {
     
     func searchCurruntWeather(city: String) {
         if let _ = model.getWeatherFor(city: city) {
-            model.addPincode(city: city)
+            model.addCity(city: city)
             modelDataUpdated()
         }
     }

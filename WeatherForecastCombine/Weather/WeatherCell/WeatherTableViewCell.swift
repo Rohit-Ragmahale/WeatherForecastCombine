@@ -33,16 +33,6 @@ class WeatherTableViewCell: UITableViewCell {
         temperatureDetails.text = ""
         humidity.text = ""
     }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-//        weatherImageView.image = nil
-//        city.text = ""
-//        tempDescription.text = ""
-//        temperatureDetails.text = ""
-//        humidity.text = ""
-//        pincode = ""
-    }
 
     @IBAction func usertappedBoomarkPincode() {
         actionDelegate?.boookmarkPincode(city: weatherCiti)

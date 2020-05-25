@@ -9,19 +9,19 @@
 import Foundation
 import Combine
 
-class BookmarkDataModel: PincodeProtocol {
+class BookmarkDataModel: CityListProtocol {
      var presenter: WeatherModelDelegate?
-    internal var pincodes: [String] = []
+    internal var cityList: [String] = []
     
     internal var cityWeatherData: [CityWeatherData] = []
     var anyCancellable: [AnyCancellable] = []
     
     init() {
-        pincodes = CoreDataManager.shared.getAllBookmarks()
+        cityList = CoreDataManager.shared.getAllBookmarks()
         
         DataSource.shared.$cityWeatherDataList.map { (cityData) -> [CityWeatherData] in
             return cityData.filter { (data) -> Bool in
-                self.pincodes.contains(data.name.lowercased())
+                self.cityList.contains(data.name.lowercased())
             }
         }.sink { (data) in
             DispatchQueue.main.async {
@@ -34,16 +34,16 @@ class BookmarkDataModel: PincodeProtocol {
         .store(in: &anyCancellable)
         
         DataSource.shared.bookmarkSubject.sink { (bookmakedCity) in
-            if !self.pincodes.contains(bookmakedCity.name) {
+            if !self.cityList.contains(bookmakedCity.name) {
                 self.cityWeatherData.append(bookmakedCity)
-                self.pincodes.append(bookmakedCity.name)
+                self.cityList.append(bookmakedCity.name)
                 self.presenter?.modelDataUpdated()
             }
         }
        .store(in: &anyCancellable)
         
         DataSource.shared.removeBookmarkSubject.sink { (removedCity) in
-            self.pincodes = self.pincodes.filter({ (city) -> Bool in
+            self.cityList = self.cityList.filter({ (city) -> Bool in
                 removedCity.lowercased() != city
             })
             self.cityWeatherData = self.cityWeatherData.filter({ (data) -> Bool in
@@ -60,16 +60,16 @@ class BookmarkDataModel: PincodeProtocol {
         self.presenter = presenter
     }
     
-    func addPincode(city : String) {
-        if !pincodes.contains(city) {
-            pincodes.append(city)
+    func addCity(city : String) {
+        if !cityList.contains(city) {
+            cityList.append(city)
             CoreDataManager.shared.bookmarkLocation(city: city)
         }
     }
 
-    func removePincode(city: String) {
-        if let index = pincodes.firstIndex(of: city) {
-            pincodes.remove(at:index)
+    func removeCity(city: String) {
+        if let index = cityList.firstIndex(of: city) {
+            cityList.remove(at:index)
         }
         CoreDataManager.shared.deleteBookmark(city: city.lowercased())
         DataSource.shared.bookmarkCity(city: city, shouldBookMark: false)
@@ -81,14 +81,14 @@ class BookmarkDataModel: PincodeProtocol {
     
     func getWeatherFor(city: String) -> CityWeatherData? {
         guard  let locationWeatherData = DataSource.shared.getCityWeatherDataFor(city: city) else {
-            addPincode(city: city)
+            addCity(city: city)
             DataSource.shared.loadCurrentWeather(city: city)
             return nil
         }
         return locationWeatherData
     }
     private func downloadBookmarkedWeatherData() {
-        for city in pincodes {
+        for city in cityList {
             DataSource.shared.loadCurrentWeather(city: city)
         }
     }
