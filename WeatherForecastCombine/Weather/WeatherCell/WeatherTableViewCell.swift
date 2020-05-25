@@ -80,20 +80,6 @@ class WeatherTableViewCell: UITableViewCell {
 
     }
     
-    func inflateWithWeather(weather: DayForecast?, locationDetails: LocationDetails?, pincode: String) {
-        bookMarkButton.isHidden = false
-        forecastButton.isHidden = false
-        self.weatherCiti = pincode
-        if let locationDetails = locationDetails {
-            city.text = locationDetails.city
-        }
-        if let weather = weather {
-            updateWeatherDetails(weather: weather)
-        } else {
-            updateViewForNoData()
-        }
-    }
-    
     private func updateWeatherDetails(weather: DayForecast) {
         weatherImageView.load(url: weather.imageURL(), placeholder: UIImage())
         tempDescription.text = weather.weatherDescription

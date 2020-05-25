@@ -19,8 +19,6 @@ class DataSource {
     
     static let shared = DataSource()
     
-    private var locationWeatherDataList: [LocationWeatherData] = []
-    
     @Published var cityWeatherDataList: [CityWeatherData] = []
     
     private var selectedLocationForForecast: String?
@@ -31,29 +29,6 @@ class DataSource {
     
     }
 
-    
-    func loadCurrentWeather(locationWeatherData: LocationWeatherData) {
-        locationWeatherDataList.insert(locationWeatherData, at: 0)
-        NetworkHelper.shared.loadCurrentWeather(city: locationWeatherData.pincode)
-    }
-//
-//    func bookmarkPincode(city: String, shouldBookMark: Bool = true) {
-//        if let locationWeatherData = getLocationWeatherDataFor(city: city) {
-//            locationWeatherData.isBookmarked = shouldBookMark
-//            for observer: DataSourceObserver in self.observers {
-//                observer.observer?.weatherDataUpdated()
-//            }
-//        }
-//    }
-
-
-//
-//    func getForecastForLocation(selectedCity: String) {
-//        selectedLocationForForecast = selectedCity
-//        if let location = selectedLocationForForecast, let cityCode = getLocationWeatherDataFor(city: location)?.locationDetails?.cityCode {
-//            NetworkHelper.shared.loadForecast(cityCode: cityCode, city: selectedCity)
-//        }
-//    }
 
     func getCityWeatherDataFor(city: String) -> CityWeatherData? {
         cityWeatherDataList.filter { (data: CityWeatherData) -> Bool in
