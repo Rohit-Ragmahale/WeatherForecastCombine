@@ -14,6 +14,10 @@ class WeatherViewController: UIViewController {
     @IBOutlet weak var picodeTextField: UITextField!
     @IBOutlet weak var tableView: UITableView!
     
+    @Published var searchSubject = PassthroughSubject<String, Never>()
+    
+    var publishers: [AnyCancellable] = []
+    
     private var presenter: WeatherPresenter?
 
     
@@ -27,8 +31,9 @@ class WeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //learningCombineStudy()
+        learningCombineStudy()
         title = "Search City Weather"
+         bind(presenter: presenter!)
         tableView.register(UINib(nibName: "WeatherTableViewCell", bundle: nil), forCellReuseIdentifier: "WeatherTableViewCell")
         presenter?.attachView(view: self)
     }
@@ -40,11 +45,20 @@ class WeatherViewController: UIViewController {
     @IBAction func userTappedSearchButton(_ sender: Any) {
         picodeTextField.resignFirstResponder()
         if let text = picodeTextField.text, text.count > 0 {
-            presenter?.searchCurruntWeather(pincode: text)
+            searchSubject.send(text)
         }
         picodeTextField.text = ""
     }
 
+}
+
+extension WeatherViewController {
+    func bind(presenter: WeatherPresenter) {
+        let publisher = self.searchSubject.sink { (searchCity) in
+            presenter.searchCurruntWeather(city: searchCity)
+        }
+        publishers.append(publisher)
+    }
 }
 
 extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
@@ -82,127 +96,4 @@ extension WeatherViewController:  WeatherPresenterDelegate {
     }
 }
 
-extension WeatherViewController {
-    func justPublisher() {
-        print("\njustPublisher")
-        let _ = Just(1)
-        .map({ (input) -> String in
-            return "Value eemitrf is JUST (\(input))"
-        })
-        .sink(receiveCompletion: { completion in
-            switch(completion) {
-            case .finished:
-                print("Complted")
-            case .failure(let error):
-                print(error)
-            }
-        }, receiveValue: { (value) in
-            print("\(value)")
-        })
-    }
-    
-    func directionaryToStream() {
-        print("\ndirectionaryToStream")
-        _ = ["key1": "value1", "key2": "value2"]
-        .publisher
-        .map { object -> String in
-                return object.key
-        }.sink(receiveCompletion:{ completion in
-            switch (completion) {
-            case .failure(let error):
-            print(error)
-            case .finished:
-            print("complted")
-            }
-        }) { (value) in
-            print("Value => \(value)")
-        }
-        
-    }
-    
-    
-    func passThroughSubject() {
-        print("\npassThroughSubject")
-        
-        let subject = PassthroughSubject<String, Never>()
-        
-        let publisher = Just("Just a value")
-        
-        let _ = publisher.subscribe(subject)
-        
-        let subscriber = subject
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished:
-                    print("Completed")
-                case .failure(let Error):
-                    print(Error)
-                }
-            }) { (value) in
-                print("\(value)")
-        }
-        
-    }
-    
-    func failureSubject() {
-         print("\nfailureSubject")
-        enum SubjectError : Error{
-            case unknown
-        }
-        let subject = PassthroughSubject<String, SubjectError>()
-        
-        let subscriber = subject.sink(receiveCompletion: { completion in
-            switch completion {
-            case .finished:
-                print("Completed")
-            case .failure(let Error):
-                print(Error)
-            }
-        }) { (value) in
-                print("\(value)")
-        }
 
-        subject.send("Manual")
-        subject.send(completion: .failure(SubjectError.unknown))
-        subject.send("This wont be received")
-    }
-    
-    
-    func currentValueSubject() {
-        print("\ncurrentValueSubject")
-          let subject = CurrentValueSubject<Int, Never>(1)
-          let subscriber = subject.sink { value in
-              print(value)
-          }
-          subject.send(2)
-          subject.send(3)
-    }
-    
-    func future() {
-        print("\nFuture")
-        var i = 1
-        let future = Future<Int, Never> { promise in
-            print("Addition \(i)")
-        i = i + 1
-        promise(.success(i))
-        }
-        //prints 2 and finishes
-        let q2 = future.sink(receiveCompletion: { print($0) },
-        receiveValue: { print($0) })
-        //prints 2 and finishes
-        let q1 = future.sink(receiveCompletion: { print($0) },
-        receiveValue: { print($0) })
-        
-        let q3 = future.sink(receiveCompletion: { print($0) },
-        receiveValue: { print($0) })
-    }
-    func learningCombineStudy() {
-        justPublisher()
-        directionaryToStream()
-        passThroughSubject()
-        failureSubject()
-        currentValueSubject()
-        future()
-        
-    }
-}

@@ -8,6 +8,21 @@
 
 import Foundation
 import UIKit
+import Combine
+
+enum WeatherUpdateState {
+    case idle
+    case loading
+    case success
+    case noResults
+    case failure(Error)
+}
+
+struct WeatherSearchViewModelInput {
+    let search: AnyPublisher<String, Never>
+}
+
+typealias WeatherSearchViewModelOuput = AnyPublisher<WeatherUpdateState, Never>
 
 protocol WeatherPresenterDelegate {
    func reloadData()
@@ -20,6 +35,8 @@ class WeatherPresenter {
     var view : WeatherPresenterDelegate?
     var model: WeatherModel = WeatherModel()
     
+    private var cancellable: [AnyCancellable] = []
+    
     init(navigator: WeatherForecastNavigator) {
         self.navigator = navigator
         model.attachPresenter(presenter: self)
@@ -29,19 +46,21 @@ class WeatherPresenter {
         self.view = view
     }
     
-    func searchCurruntWeather(pincode: String) {
-        model.addPincode(pin: pincode)
+    func searchCurruntWeather(city: String) {
+        if let _ = model.getWeatherFor(city: city) {
+            model.addPincode(city: city)
+            modelDataUpdated()
+        }
     }
     
     func getPincodeCount() -> Int {
-        model.getAllpincodes().count
+        model.cityWeatherDataList().count
     }
 
     func getWeatherDataForCellAtIndex(cell: WeatherTableViewCell, index: Int) {
-        let pincode = model.getAllpincodes()[index]
+        let cityWeather = model.cityWeatherDataList()[index]
         cell.actionDelegate = self
-        let data = model.getWeatherFor(pincode: pincode)
-        cell.inflateWithWeather(weather: data?.weather, locationDetails: data?.locationDetails, pincode: pincode)
+        cell.inflateWithCityWeatherData(weather: cityWeather)
     }
 }
 
@@ -50,8 +69,8 @@ extension WeatherPresenter: WeatherModelDelegate {
         view?.showAlert(title: "Error", message: "Can not bookmark. You can bookmark max \(WeatherModel.max_bookmarkLimit) locations")
     }
     
-    func weatherDataLoadFailedFor(pincode: String) {
-        view?.showAlert(title: "Error", message: "Failed to get data for pin: \(pincode)")
+    func weatherDataLoadFailedFor(city: String) {
+        view?.showAlert(title: "Error", message: "Failed to get data for pin: \(city)")
     }
     
     func modelDataUpdated() {
@@ -61,13 +80,12 @@ extension WeatherPresenter: WeatherModelDelegate {
 }
 
 extension WeatherPresenter: ActionDelegate {
-    
-      func getForecast(pincode: String) {
-        navigator.showWatherForecast(pincode: pincode)
+      func getForecast(city: String) {
+        navigator.showWatherForecast(city: city)
     }
 
-    func boookmarkPincode(pincode: String) {
-        model.bookmarkPincode(pincode: pincode)
-        view?.showAlert(title: "Bookmark", message: "Bookmark added for \(pincode)")
+    func boookmarkPincode(city: String) {
+        model.bookmarkPincode(city: city.lowercased())
+        view?.showAlert(title: "Bookmark", message: "Bookmark added for \(city)")
     }
 }

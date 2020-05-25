@@ -39,7 +39,7 @@ class ForecastListViewController: UIViewController {
 
 extension ForecastListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter?.getPincodeCount() ?? 0
+        presenter?.forecastsCount() ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

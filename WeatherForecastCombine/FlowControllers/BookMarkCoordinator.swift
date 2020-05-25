@@ -24,8 +24,8 @@ class BookMarkCoordinator: Coordinator {
 }
 
 extension BookMarkCoordinator: WeatherForecastNavigator {
-    func showWatherForecast(pincode: String) {
-        let forecastCoordinator = ForecastCoordinator(navigator: navController, pincode: pincode)
+    func showWatherForecast(city: String) {
+        let forecastCoordinator = ForecastCoordinator(navigator: navController, city: city)
         forecastCoordinator.start()
         childCoordinator = [forecastCoordinator]
     }

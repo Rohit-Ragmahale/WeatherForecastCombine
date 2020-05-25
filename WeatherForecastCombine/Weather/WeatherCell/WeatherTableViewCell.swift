@@ -9,8 +9,8 @@
 import UIKit
 
 protocol ActionDelegate {
-    func boookmarkPincode(pincode: String)
-    func getForecast(pincode: String)
+    func boookmarkPincode(city: String)
+    func getForecast(city: String)
 }
 
 class WeatherTableViewCell: UITableViewCell {
@@ -24,7 +24,7 @@ class WeatherTableViewCell: UITableViewCell {
     @IBOutlet weak var forecastButton: UIButton!
     var actionDelegate: ActionDelegate?
     
-    var pincode: String = ""
+    var weatherCiti: String = ""
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -45,14 +45,14 @@ class WeatherTableViewCell: UITableViewCell {
     }
 
     @IBAction func usertappedBoomarkPincode() {
-        actionDelegate?.boookmarkPincode(pincode: pincode)
+        actionDelegate?.boookmarkPincode(city: weatherCiti)
     }
     
     @IBAction func getForecastButtonTapped(_ sender: Any) {
-        actionDelegate?.getForecast(pincode: pincode)
+        actionDelegate?.getForecast(city: weatherCiti)
     }
 
-    func inflateWithForecast(weather: Forecast?, pincode: String) {
+    func inflateWithForecast(weather: DayForecast?, pincode: String) {
         bookMarkButton.isHidden = true
         forecastButton.isHidden = true
         
@@ -64,10 +64,26 @@ class WeatherTableViewCell: UITableViewCell {
         }
     }
     
-    func inflateWithWeather(weather: Forecast?, locationDetails: LocationDetails?, pincode: String) {
+    
+    func inflateWithCityWeatherData(weather: CityWeatherData) {
         bookMarkButton.isHidden = false
         forecastButton.isHidden = false
-        self.pincode = pincode
+        
+        weatherCiti = weather.name
+        city.text = weather.name
+        
+        weatherImageView.load(url: weather.forecast.imageURL(), placeholder: UIImage())
+        
+        tempDescription.text = weather.forecast.weatherDescription
+        temperatureDetails.text = "Temperature: \(weather.forecast.temperature.toString())"
+        humidity.text = "Humidity: \(weather.forecast.humidity)"
+
+    }
+    
+    func inflateWithWeather(weather: DayForecast?, locationDetails: LocationDetails?, pincode: String) {
+        bookMarkButton.isHidden = false
+        forecastButton.isHidden = false
+        self.weatherCiti = pincode
         if let locationDetails = locationDetails {
             city.text = locationDetails.city
         }
@@ -78,17 +94,15 @@ class WeatherTableViewCell: UITableViewCell {
         }
     }
     
-    private func updateWeatherDetails(weather: Forecast) {
-        if let url = weather.url {
-             weatherImageView.load(url: url, placeholder: UIImage())
-        }
-        tempDescription.text = weather.description
-        temperatureDetails.text = "Temp: \(weather.temp?.toString() ?? "NA")\n(Min: \(weather.temp_min?.toString() ?? "NA") Max:\(weather.temp_max?.toString() ?? "NA"))"
-        humidity.text = "Humidity: \(weather.humidity?.toString() ?? "NA")"
+    private func updateWeatherDetails(weather: DayForecast) {
+        weatherImageView.load(url: weather.imageURL(), placeholder: UIImage())
+        tempDescription.text = weather.weatherDescription
+        temperatureDetails.text = "Temp: \(weather.temperature.toString())"
+        humidity.text = "Humidity: \(weather.humidity.toString())"
     }
     
     private func updateViewForNoData() {
-       city.text = pincode
+       city.text = weatherCiti
        tempDescription.text = "Details Not available"
     }
 }

@@ -24,14 +24,13 @@ class BookMarkPresenter {
     }
 
     func getPincodeCount() -> Int {
-        model.getAllpincodes().count
+        model.cityWeatherDataList().count
     }
 
     func getWeatherDataForCellAtIndex(cell: WeatherTableViewCell, index: Int) {
-        let pincode = model.getAllpincodes()[index]
+        let cityWeather = model.cityWeatherDataList()[index]
         cell.actionDelegate = self
-        let data = model.getWeatherFor(pincode: pincode)
-        cell.inflateWithWeather(weather: data?.weather, locationDetails: data?.locationDetails, pincode: pincode)
+        cell.inflateWithCityWeatherData(weather: cityWeather)
     }
 }
 
@@ -40,8 +39,8 @@ extension BookMarkPresenter: WeatherModelDelegate {
         
     }
 
-    func weatherDataLoadFailedFor(pincode: String) {
-        view?.showAlert(title: "Error", message: "Failed to get data for \(pincode)")
+    func weatherDataLoadFailedFor(city: String) {
+        view?.showAlert(title: "Error", message: "Failed to get data for \(city)")
     }
     
     func modelDataUpdated() {
@@ -51,11 +50,11 @@ extension BookMarkPresenter: WeatherModelDelegate {
 }
 
 extension BookMarkPresenter: ActionDelegate {
-    func getForecast(pincode: String) {
-        navigator.showWatherForecast(pincode: pincode)
+    func getForecast(city: String) {
+        navigator.showWatherForecast(city: city)
     }
     
-    func boookmarkPincode(pincode: String) {
-        model.removePincode(pin: pincode)
+    func boookmarkPincode(city: String) {
+        model.removePincode(city: city)
     }
 }

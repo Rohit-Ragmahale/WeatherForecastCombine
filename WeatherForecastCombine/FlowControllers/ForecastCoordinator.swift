@@ -11,15 +11,15 @@ import UIKit
 class ForecastCoordinator: Coordinator {
     var childCoordinator: [Coordinator] = []
     var navigator: UINavigationController
-    var pincode: String
+    var city: String
     
-    init(navigator: UINavigationController, pincode: String) {
+    init(navigator: UINavigationController, city: String) {
         self.navigator = navigator
-        self.pincode = pincode
+        self.city = city
     }
     
     func start() {
-         let presenter = ForecastListPresenter(pincode: pincode)
+         let presenter = ForecastListPresenter(city: city)
          let forecastVC = ForecastListViewController.initWith(presenter: presenter)
         navigator.present(UINavigationController(rootViewController: forecastVC), animated: true) { }
     }
