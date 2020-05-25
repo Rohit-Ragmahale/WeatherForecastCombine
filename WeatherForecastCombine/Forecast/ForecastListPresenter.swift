@@ -57,22 +57,3 @@ class ForecastListPresenter {
         }
     }
 }
-
-extension ForecastListPresenter: DataSourceDelegate  {
-    
-    func forecastDataLoadFailedFor(city: String) {
-        view?.showAlert(title: "Error", message: "Failed to get forecast data for \(city)")
-    }
-    
-    func weatherDataLoadFailedFor(city: String) {
-        
-    }
-    
-    func forecastDataUpdated() {
-        view?.reloadData()
-    }
-    
-    func weatherDataUpdated() {
-        view?.reloadData()
-    }
-}

@@ -9,19 +9,6 @@
 import Foundation
 import Combine
 
-protocol DataSourceDelegate {
-    func weatherDataUpdated()
-    func forecastDataUpdated()
-    func weatherDataLoadFailedFor(city: String)
-    func forecastDataLoadFailedFor(city: String)
-}
-
-class DataSourceObserver {
-    let observer: DataSourceDelegate?
-    init(observer: DataSourceDelegate?) {
-        self.observer = observer
-    }
-}
 
 class DataSource {
     
@@ -31,7 +18,6 @@ class DataSource {
     var forecastLoded = PassthroughSubject<Void, Never>()
     
     static let shared = DataSource()
-    private var observers: [DataSourceObserver] = []
     
     private var locationWeatherDataList: [LocationWeatherData] = []
     
@@ -44,14 +30,7 @@ class DataSource {
     private init() {
     
     }
-    
-    func addObserver(observer: DataSourceDelegate) {
-        observers.append(DataSourceObserver(observer: observer))
-    }
-    
-    func removeObserver(observer: DataSourceDelegate) {
-        
-    }
+
     
     func loadCurrentWeather(locationWeatherData: LocationWeatherData) {
         locationWeatherDataList.insert(locationWeatherData, at: 0)

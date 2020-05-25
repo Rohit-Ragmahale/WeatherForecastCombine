@@ -17,7 +17,6 @@ class BookmarkDataModel: PincodeProtocol {
     var anyCancellable: [AnyCancellable] = []
     
     init() {
-        DataSource.shared.addObserver(observer: self)
         pincodes = CoreDataManager.shared.getAllBookmarks()
         
         DataSource.shared.$cityWeatherDataList.map { (cityData) -> [CityWeatherData] in
@@ -95,23 +94,4 @@ class BookmarkDataModel: PincodeProtocol {
     }
 }
 
-extension BookmarkDataModel: DataSourceDelegate  {
-    
-    func forecastDataLoadFailedFor(city: String) {
-        
-    }
-    
-    func weatherDataLoadFailedFor(city: String) {
-        removePincode(city: city)
-        presenter?.weatherDataLoadFailedFor(city: city)
-    }
-    
-    func forecastDataUpdated() {
-        presenter?.modelDataUpdated()
-    }
-    
-    func weatherDataUpdated() {
-        pincodes = CoreDataManager.shared.getAllBookmarks()
-        presenter?.modelDataUpdated()
-    }
-}
+

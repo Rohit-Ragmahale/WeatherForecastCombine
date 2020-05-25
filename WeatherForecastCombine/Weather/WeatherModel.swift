@@ -32,7 +32,6 @@ class WeatherModel: PincodeProtocol {
     var anyCancellable: [AnyCancellable] = []
     
     init() {
-        DataSource.shared.addObserver(observer: self)
         DataSource.shared.$cityWeatherDataList.map { (cityData) -> [CityWeatherData] in
             return cityData.filter { (data) -> Bool in
                 self.pincodes.contains(data.name.lowercased())
@@ -90,24 +89,5 @@ class WeatherModel: PincodeProtocol {
             return nil
         }
         return locationWeatherData
-    }
-}
-
-extension WeatherModel: DataSourceDelegate {
-    
-    func forecastDataLoadFailedFor(city: String) {
-    }
-    
-    func weatherDataLoadFailedFor(city: String) {
-        removePincode(city: city)
-        presenter?.weatherDataLoadFailedFor(city: city)
-    }
-    
-    func forecastDataUpdated() {
-        presenter?.modelDataUpdated()
-    }
-    
-    func weatherDataUpdated() {
-        presenter?.modelDataUpdated()
     }
 }
