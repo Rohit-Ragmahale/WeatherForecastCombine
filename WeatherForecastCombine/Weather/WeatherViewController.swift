@@ -54,10 +54,24 @@ class WeatherViewController: UIViewController {
 
 extension WeatherViewController {
     func bind(presenter: WeatherPresenter) {
-        let publisher = self.searchSubject.sink { (searchCity) in
-            presenter.searchCurruntWeather(city: searchCity)
-        }
-        publishers.append(publisher)
+        let publisher1 = picodeTextField.textPublisher
+            .print()
+            .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
+            .print()
+            .map {$0 as String?}
+            .removeDuplicates()
+            .print()
+            .sink { value in
+                if let searchCity = value, searchCity.count > 0 {
+                    self.presenter?.searchCurruntWeather(city: searchCity)
+                }
+            }
+        publishers.append(publisher1)
+        
+//        let publisher = self.searchSubject.sink { (searchCity) in
+//            presenter.searchCurruntWeather(city: searchCity)
+//        }
+//        publishers.append(publisher)
     }
 }
 

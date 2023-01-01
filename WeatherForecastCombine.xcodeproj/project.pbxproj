@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		435BD5622961E3E200C2F508 /* UITextFieldPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435BD5612961E3E200C2F508 /* UITextFieldPublisher.swift */; };
 		F909ECA6246C5E41007F6FAF /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F909ECA5246C5E41007F6FAF /* WeatherModel.swift */; };
 		F909ECA8246C5F66007F6FAF /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F909ECA7246C5F66007F6FAF /* NetworkManager.swift */; };
 		F909ECAA246C602A007F6FAF /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F909ECA9246C602A007F6FAF /* NetworkHelper.swift */; };
@@ -52,6 +53,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		435BD5612961E3E200C2F508 /* UITextFieldPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldPublisher.swift; sourceTree = "<group>"; };
 		F909ECA5246C5E41007F6FAF /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		F909ECA7246C5F66007F6FAF /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		F909ECA9246C602A007F6FAF /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 				F953D68F24713F3B00A422D8 /* DateExtension.swift */,
 				F953D68D24713F1D00A422D8 /* CommonExtensions.swift */,
 				F996C0382477DD65007C2306 /* PublisherExtension.swift */,
+				435BD5612961E3E200C2F508 /* UITextFieldPublisher.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -388,6 +391,7 @@
 				F96BE9CE246C4FEA001A3A04 /* BookMark+CoreDataProperties.swift in Sources */,
 				F96BE9BF246C4053001A3A04 /* WeatherCoreData.swift in Sources */,
 				F95E6F9A24793A8400AD0003 /* APIConstant.swift in Sources */,
+				435BD5622961E3E200C2F508 /* UITextFieldPublisher.swift in Sources */,
 				F96BE9CB246C4840001A3A04 /* BookMarkModel.swift in Sources */,
 				F99353272470651A00BAE1E8 /* BookMarkViewController.swift in Sources */,
 				F99267912476B27C00B5FEBD /* CoordinatorDependencyProviders.swift in Sources */,
